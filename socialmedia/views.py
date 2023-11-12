@@ -169,3 +169,9 @@ def  topicsPage(request):
     topics =Topic.objects.filter(name__icontains=q)
     context ={'topics':topics}
     return render(request,'socialmedia/topics.html',context)
+
+
+def activityPage(request):
+    room_messages  =Message.objects.all()[0:4]
+    context ={'room_messages':room_messages}
+    return render(request,'socialmedia/activity.html', context)
