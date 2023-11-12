@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
-from  .forms import RoomForm
+from  .forms import RoomForm,userForm
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -151,3 +151,15 @@ def deleteMessage(request ,pk):
         message.delete()
         return redirect('home')
     return render(request,'socialmedia/delete.html',{'obj':message})
+
+@login_required(login_url='login')
+def updateUser(request):
+    user = request.user
+    form =userForm(instance = user)
+    context = {'form':form}
+    if request.method == 'POST':
+        form = userForm(request.POST,instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile',pk=user.id)
+    return render(request,'socialmedia/update-user.html',context)
