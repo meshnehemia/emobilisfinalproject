@@ -1,6 +1,6 @@
 from django.shortcuts import render ,redirect
 from django.db.models import Q
-from .models import Room,Topic
+from .models import Room,Topic,Message
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -55,7 +55,6 @@ def registerPage(request):
             messages.error(request,"Error occurred during registration")
 
     
-    
     return render(request,'socialmedia/login_register.html',{'form':form})
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -66,11 +65,25 @@ def home(request):
         )
     topics = Topic.objects.all()
     room_count = rooms.count()
+    room_messages =Message.object.all()
     context = {'rooms':rooms,'topics':topics,'room_count':room_count}
     return render(request,'socialmedia/home.html', context )
 def room(request,pk):
-    rooms =Room.objects.get(id=pk)
-    context = {'rooms':rooms}
+    room =Room.objects.get(id=pk)
+    room_messages =room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    if request.method == 'POST':
+        message =Message.objects.create(
+            user =request.user,
+            room =room,
+            body = request.POST.get('body')
+            
+        )
+        room.participants.add(request.user)
+        return redirect ('room',pk=room.id)
+    
+    
+    context = {'rooms':room,'room_messages':room_messages,'participants':participants}
     return render(request,'socialmedia/room.html' ,context)
 
 
@@ -112,3 +125,11 @@ def deleteRoom(request ,pk):
 
 def navbar(request):
     return render(request,'navbar.html')
+
+@login_required(login_url='login')
+def deleteMessage(request ,pk):
+    message =Message.objects.get(id=pk)
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request,'socialmedia/delete.html',{'obj':message})
