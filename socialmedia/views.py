@@ -65,8 +65,8 @@ def home(request):
         )
     topics = Topic.objects.all()
     room_count = rooms.count()
-    room_messages =Message.object.all()
-    context = {'rooms':rooms,'topics':topics,'room_count':room_count}
+    room_messages =Message.objects.filter(Q(room__topic__name__icontains = q))
+    context = {'rooms':rooms,'topics':topics,'room_count':room_count,"room_messages":room_messages}
     return render(request,'socialmedia/home.html', context )
 def room(request,pk):
     room =Room.objects.get(id=pk)
@@ -82,10 +82,16 @@ def room(request,pk):
         room.participants.add(request.user)
         return redirect ('room',pk=room.id)
     
-    
     context = {'rooms':room,'room_messages':room_messages,'participants':participants}
     return render(request,'socialmedia/room.html' ,context)
 
+def userProfile(request,pk):
+    user =User.objects.get(id=pk) 
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    context ={'user':user,'rooms':rooms,'room_messages':room_messages,'topics':topics}
+    return render (request,'socialmedia/profile.html',context)
 
 
 @login_required(login_url='login')
@@ -94,7 +100,9 @@ def createRoom(request):
     if request.method =='POST':
         form =RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            room =form.save(commit=False)
+            room.host = request.user
+            room.save()
             return redirect('home')
     context ={'form':form}
     return render(request,'socialmedia/room_form.html',context)
