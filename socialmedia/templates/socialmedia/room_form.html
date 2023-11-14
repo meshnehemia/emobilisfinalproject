@@ -13,14 +13,14 @@
                 </path>
               </svg>
             </a>
-            <h3>Create/update Study Room</h3>
+            <h3>Create/update Study group</h3>
           </div>
         </div>
         <div class="layout__body">
           <form class="form" action="" method="POST">
             {%csrf_token%}
             <div class="form__group">
-              <label for="room_topic">Room Topic</label>
+              <label for="room_topic">Group Topic</label>
               <!-- {{form.topic}} -->
               <input required type="text" value="{{room.topic.name}}" name="topic" id="room_topic" list="topic-list" />
               <datalist id="topic-list">
@@ -33,11 +33,11 @@
               </datalist>
             </div>
             <div class="form__group">
-              <label for="room_name">Room Name</label>
+              <label for="room_name">Group Name</label>
               {{form.name}}
             </div>
             <div class="form__group">
-              <label for="room_name">Room Description</label>
+              <label for="room_name">Group Description</label>
               {{form.description}}
             </div>
             <!-- <div class="form__group">
@@ -53,7 +53,7 @@
 
             </div> -->
             <div class="form__action">
-              <a class="btn btn--dark" href="index.html">Cancel</a>
+              <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
               <button class="btn btn--main" type="submit">Submit</button>
             </div>
           </form>

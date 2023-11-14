@@ -14,7 +14,7 @@
                   ></path>
                 </svg>
               </a>
-              <h3>Study Room</h3>
+              <h3>Study Group</h3>
             </div>
             {% if rooms.host == request.user %}
               <div class="room__topRight">
@@ -131,7 +131,7 @@
                   <img src="{{user.avator.url}}" />
                 </div>
                 <p>
-                  {{user.username}}
+                  {{user.name}}
                   <span>@{{user.username}}</span>
                 </p>
               </a>
