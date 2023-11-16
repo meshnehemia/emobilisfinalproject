@@ -20,8 +20,9 @@ def home(request):
     )
     topics = Topic.objects.all()[0:5]
     room_count = rooms.count()
+    user = views.authenticated_user
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
-    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count, "room_messages": room_messages}
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count, "room_messages": room_messages, 'user': user}
     if request.method == 'POST':
         message = request.POST.get('message')
         response = ask_openai(message)

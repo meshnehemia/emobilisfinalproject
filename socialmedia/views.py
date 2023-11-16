@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import RoomForm, userForm, MyUserCreationForm
 
-
 # Create your views here.
 
 # rooms =[
@@ -15,6 +14,7 @@ from .forms import RoomForm, userForm, MyUserCreationForm
 #     {'id':2,'name':'design with me'},
 #     {'id':3,'name':'fronted developer'},
 # ]
+
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -187,3 +187,9 @@ def activityPage(request):
     room_messages = Message.objects.all()[0:4]
     context = {'room_messages': room_messages}
     return render(request, 'socialmedia/activity.html', context)
+
+
+def authenticated_user(request):
+    if request.user.is_authenticated:
+        return request.user
+    return render(request, 'socialmedia/login_register.html', context)

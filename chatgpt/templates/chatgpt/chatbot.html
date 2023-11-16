@@ -15,7 +15,7 @@
                     <div class="w-100 ">
                         <div class="card" style="background-color: #3f4156;">
                             <div class="card-header d-flex justify-content-between align-items-center p-3 " style="border-top: 4px solid #696d97;">
-                                <h5 class="mb-0 lh-1">Chat with ai {{ user.username }}</h5>
+                                <h5 class="mb-0 lh-1">Chat with ai</h5>
                             </div>
                         <div class="card-body overflow-y-scroll nav-change overflow-y-scroll " style="max-height: 450px;min-height: 450px; background-color: #3f4156;">
                             <div class="messages-list">
@@ -37,6 +37,9 @@
                                 </div>
                             </div>
                         </form>
+                            <script>
+                                    const profile = "{{ request.user.avator.url }}";
+                            </script>
 
         </div>
 

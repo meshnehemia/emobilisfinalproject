@@ -18,7 +18,7 @@ const  messagesList =document.querySelector('.messages-list');
                                     </div>
                                         <div class="d-block">
                                             <p class="small">You</p>
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp" alt="avatar 1" style="width: 45px; height: 45px; margin-top:-17px; margin-right: 10px ">
+                                            <img src=${profile} alt="avatar 1" style="width: 45px; height: 45px; margin-top:-14px; margin-right: 10px;border-radius: 50% ">
                                         </div>
                                     </div>
                                 </div>`;
@@ -45,10 +45,10 @@ const  messagesList =document.querySelector('.messages-list');
                                             <p class="small">CHATBOT</p>
                                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp" alt="avatar 1" style="width: 45px; height: 45px; margin-top:-17px; margin-right: 10px ">
                                    </div>
-                                   
+
                                     <p class="bg-white p-2 rounded " style="margin-right: 70px ;margin-top: 50px">${response}</p>
                                 </div>
-                                
+
                             </div>
                         </div>
                         `;
