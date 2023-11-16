@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-2s_@j)^2o9(bxj4sec#dj-+5zi7-vwfc%)kh=42kdi46!e-ymp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'socialmedia.apps.SocialmediaConfig',
-    'chatgpt.apps.ChatgptConfig'
+    'chatgpt.apps.ChatgptConfig',
+    'videocall',
 ]
 
 AUTH_USER_MODEL = 'socialmedia.User'

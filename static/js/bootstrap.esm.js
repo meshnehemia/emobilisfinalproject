@@ -634,7 +634,7 @@ class Config {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap base-component.js
+ * Bootstrap videochat-component.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
