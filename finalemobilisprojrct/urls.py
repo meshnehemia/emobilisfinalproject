@@ -8,6 +8,6 @@ urlpatterns = [
     path('', include('socialmedia.urls')),
     path('chat/', include('chatgpt.urls')),
     path('videochat/', include('videocall.urls')),
+    path('entertainment/', include('entertainment.urls')),
 ]
-
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
