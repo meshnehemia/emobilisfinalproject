@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'chatgpt.apps.ChatgptConfig',
     'videocall',
     'entertainment',
+    'library',
 ]
 
 AUTH_USER_MODEL = 'socialmedia.User'

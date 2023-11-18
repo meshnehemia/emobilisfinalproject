@@ -21,7 +21,7 @@
                     <div class="room__topRight">
 
 
-                        <a href="{% url 'videocall' %}">
+                        <a href="{% url 'videocall' %}" class="videocalls">
                             <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="70"
@@ -76,14 +76,15 @@
                                     ></path>
                                 </svg>
                             </a>
-                            </div>
                         {% endif %}
+                            </div>
+
 
                 </div>
                 <div class="room__box scroll">
                     <div class="room__header scroll">
                         <div class="room__info">
-                            <h3>{{ rooms.name }}</h3>
+                            <h3 class="title_room">{{ rooms.name }}</h3>
                             <span>{{ rooms.created|timesince }} ago</span>
                         </div>
                         <div class="room__hosted">
@@ -100,7 +101,7 @@
                           rerum consectetur, voluptatem repudiandae eum ea porro cupiditate provident nulla, deserunt, ab ipsum
                           corporis laboriosam deleniti molestias?
                         </div> -->
-                        <span class="room__topics">{{ rooms.topic }}</span>
+                        <span class="room__topics ">{{ rooms.topic }}</span>
                     </div>
                     <div class="room__conversation">
                         <div class="threads scroll">
@@ -158,7 +159,7 @@
                             </div>
                             <p>
                                 {{ user.name }}
-                                <span>@{{ user.username }}</span>
+                                <span class="name">@{{ user.username }}</span>
                             </p>
                         </a>
                     {% endfor %}
@@ -167,5 +168,41 @@
             <!--  End -->
         </div>
     </main>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Assuming you have a button or element with the class 'videocalls'
+            const join = document.querySelector('.videocalls');
+            const username = "{{ request.user.username }}"; // Retrieve the username from Django template
+
+            join.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const title = document.querySelector('.title_room').innerText;
+
+                alert(username);
+                alert(title);
+
+                try {
+                    let room = title; // Replace with the actual room ID or identifier
+                    let response = await fetch(`/videochat/get_token/?channel=${room}`);
+                    let data = await response.json();
+                    let UID = data.uid;
+                    let token = data.token;
+
+                    sessionStorage.setItem('UID', UID);
+                    sessionStorage.setItem('token', token);
+                    sessionStorage.setItem('room', room);
+                    sessionStorage.setItem('name', username);
+
+                    window.open('/videochat/room/', '_self');
+                } catch (error) {
+                    console.error('Error fetching or processing data:', error);
+                    // Handle errors as needed
+                }
+            });
+        });
+
+
+    </script>
+{#    <script src="script.js"></script>#}
 {% endblock content %}
