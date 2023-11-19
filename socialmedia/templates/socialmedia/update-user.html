@@ -22,8 +22,17 @@
                         {% csrf_token%}
                         {% for field in form %}
                           <div class="form__group">
-                              <label for="profile_pic">{{field.label}}</label>
-                              {{field}}
+                                {% if field.label == "Avator" %}
+                                   <div style="display: flex; justify-content: center; flex-direction: column-reverse; text-align: center">
+                                       <label for="{{ field.name }}" id="imagelabel" style="width: 50%;background-color: #0f5132;cursor: pointer; margin: 30px auto 0 auto;padding: 10px 0">Select another Image</label>
+                                        <img src="{{ field.value.url }}"  class = "myimage" alt="" style="height: 100px;width: 100px; border-radius: 50%; margin: auto">
+                                        <p style="display: none">{{ field }}<p>
+                                   </div>
+                                {% else %}
+                                    <label for="profile_pic">{{field.label}}</label>
+                                   {{ field }}
+                                {% endif %}
+
                           </div>
                         {% endfor %}
                         <div class="form__action">
@@ -36,4 +45,15 @@
         </div>
       </div>
     </main>
+    <script>
+        const label = document.getElementById('imagelabel');
+        const input = document.querySelector('[name="avator"]');
+        const myimg = document.querySelector('.myimage')
+        label.addEventListener('click',(e)=>{
+            input.click();
+        });
+        input.onchange = function (){
+            myimg.src = URL.createObjectURL(input.files[0]);
+        }
+    </script>
 {% endblock content %}

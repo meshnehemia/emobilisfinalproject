@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import requests
 from .models import MainBooks, Category, Framework
@@ -5,7 +6,7 @@ from .models import MainBooks, Category, Framework
 api_key = 'AIzaSyCTm9EWtvOvEtiRIlnIH5sH0XETPz8Mf3A'
 query = "java"
 
-
+@login_required(login_url='login')
 def home(request):
     books_data = fetch_books_data(request)
     main_books_data = main_books(request)
@@ -35,7 +36,7 @@ def home(request):
 
     return render(request, 'library/index.html', context)
 
-
+@login_required(login_url='login')
 def fetch_books_data(request):
     base_url = 'https://www.googleapis.com/books/v1/volumes'
     params = {
@@ -76,7 +77,7 @@ def frameworks(request):
 
 import requests
 
-
+@login_required(login_url='login')
 def book_description(request, description):
     base_url = 'https://www.googleapis.com/books/v1/volumes'
     params = {'q': description}

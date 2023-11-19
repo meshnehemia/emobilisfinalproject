@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from googleapiclient.discovery import build
 
@@ -7,6 +8,7 @@ API_KEY = 'AIzaSyCYi5viDwayCM4yCMuGSBQI2_W0HQlcU0U'
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 
+@login_required(login_url='login')
 def home(request):
     context = arrange_youtube_data("python")
     return render(request, 'entertainment/index.html', context)
@@ -39,6 +41,7 @@ def arrange_youtube_data(query):
     return context
 
 
+@login_required(login_url='login')
 def get_youtube_data(request):
     query = request.GET['query']
     context = arrange_youtube_data(query)

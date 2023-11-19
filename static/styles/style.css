@@ -462,6 +462,13 @@ a {
 .layout__body {
   margin: 3rem;
 }
+.checking{
+  height: 530px;
+  overflow-y: scroll;
+}
+.checking::-webkit-scrollbar{
+  width: 0;
+}
 
 @media screen and (max-width: 900px) {
   .activities,
