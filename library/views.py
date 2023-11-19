@@ -13,14 +13,15 @@ def home(request):
     category = categories(request)
     book1 = []
     book2 = []
+    book3 = []
     i = 0
     for book in main_books_data:
-        if i < 3:
+        if i < 3 and book.type == "free":
             book1.append(book)
-        elif i < 5:
+        elif i < 5 and book.type == "free":
             book2.append(book)
         else:
-            break
+            book3.append(book)
         i += 1
 
     context = {
@@ -28,7 +29,8 @@ def home(request):
         "books2": book2,
         "main_books": book1,
         "category": category,
-        "framework": framework
+        "framework": framework,
+        "book3": book3
     }
 
     return render(request, 'library/index.html', context)
@@ -47,7 +49,7 @@ def fetch_books_data(request):
         books = []
         for book in response.json().get('items', []):
             books.append({
-                "bookinfo": book.get('selfLink', ''),
+                "bookinfo": book.get('id', ''),
                 "title": book['volumeInfo'].get('title', ''),
                 "image": book['volumeInfo']['imageLinks'].get('thumbnail', ''),
             })
@@ -70,3 +72,30 @@ def categories(request):
 def frameworks(request):
     framework = Framework.objects.all().order_by('-updated_at')
     return framework
+
+
+import requests
+
+
+def book_description(request, description):
+    base_url = 'https://www.googleapis.com/books/v1/volumes'
+    params = {'q': description}
+
+    response = requests.get(base_url, params=params)
+    datainfo = []
+    if response.status_code == 200:
+        data = response.json()
+        if 'items' in data:
+            first_item = data['items'][0]['volumeInfo']
+            datainfo.append({
+                "title": first_item.get('title', 'N/A'),
+                "description": first_item.get('description', 'N/A'),
+                "authors": first_item.get('authors', ['N/A']),
+                "date_published": first_item.get('publishedDate', 'N/A'),
+                "pdf_link": first_item.get('pdfLink', 'Not Available'),
+                "is_for_sale": first_item.get('saleInfo', {}).get('saleability', 'Not Available'),
+                "image_link": first_item.get('imageLinks', {}).get('thumbnail', 'Not Available'),
+                "page_count": first_item.get('pageCount', 'N/A')
+            })
+
+    return render(request, 'library/book_description.html', {"bookinfo": datainfo})
