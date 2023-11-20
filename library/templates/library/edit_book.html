@@ -8,7 +8,7 @@
 {% block content %}
     <section>
         <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+            {% csrf_token %}
             <div class="container d-flex justify-content-between">
                 <div>
                     {% for formfield in form %}
@@ -26,7 +26,7 @@
                             <div class="d-flex justify-content-center align-items-center flex-column mt-5"
                                  style="height: 75%">
                                 <div id="imageDropArea" class="drop-area"
-                                     style="height:100%;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% static "images/img.png" %}');background-repeat: no-repeat; background-size: cover;background-position: center">
+                                     style="height:100%;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% if form.instance.image %}{{ form.instance.image.url }}{% else %}{% static "images/img.png" %}{% endif %}');background-repeat: no-repeat; background-size: cover;background-position: center">
                                     <p class="text-white">Drag and drop cover here or click to select</p>
                                 </div>
                                 <p class="d-none">{{ formfield }}</p>
@@ -41,7 +41,7 @@
                             <div class="d-flex justify-content-center align-items-center flex-column mt-5"
                                  style="height: 75%">
                                 <div id="bookDropArea" class="drop-area"
-                                     style="height:100%;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% static "images/img.png" %}');background-repeat: no-repeat; background-size: cover;background-position: center">
+                                     style="height:100%;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% if form.instance.book %}{{ form.instance.book.url }}{% else %}{% static "images/img.png" %}{% endif %}');background-repeat: no-repeat; background-size: cover;background-position: center">
                                     <p class="text-white">Drag and drop files here or click to select</p>
                                 </div>
                                 <p class="d-none">{{ formfield }}</p>
@@ -51,7 +51,7 @@
                     {% endfor %}
                 </div>
             </div>
-            <input type="submit" value="SUBMIT BOOK" class="btn btn-success text-center w-75 d-flex justify-content-center m-auto" style="font-size: 20px">
+            <input type="submit" value="{% if form.instance %}UPDATE{% else %}SUBMIT BOOK{% endif %}" class="btn btn-success text-center w-75 d-flex justify-content-center m-auto" style="font-size: 20px">
         </form>
     </section>
     <script src="{% static 'library/js/bookUpload.js' %}"></script>

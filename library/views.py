@@ -1,7 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-import requests
-
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MainBooksForm
 from .models import MainBooks, Category, Framework
 
@@ -119,7 +117,7 @@ def bookupload(request):
                     title=form.cleaned_data['title'],
                     description=form.cleaned_data['description'],
                     topic=topic,
-                    auther=request.user.username,
+                    auther=request.user,
                     image=form.cleaned_data['image'],
                     book=form.cleaned_data['book'],
                     type=form.cleaned_data['type'],
@@ -131,7 +129,24 @@ def bookupload(request):
                 return render(request, 'socialmedia/login_register.html')
         else:
             print("Form is not valid. Please check the form data.")
+            print(form.errors)
     else:
         form = MainBooksForm()
     context = {'form': form}
     return render(request, 'library/fileUpload.html', context)
+
+
+def edit_book(request, pk):
+    book = get_object_or_404(MainBooks, pk=pk)
+    if request.method == 'POST':
+        form = MainBooksForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            book_instance = form.save(commit=False)
+            category_name = form.cleaned_data['category'].category_name
+            book_instance.topic = category_name
+            book_instance.save()
+            return redirect('libraryhome')
+    else:
+        form = MainBooksForm(instance=book)
+    context = {'form': form, 'book': book}
+    return render(request, 'library/edit_book.html', context)

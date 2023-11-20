@@ -17,11 +17,11 @@ function handleFiles(files, type) {
             bookInput.files = files;
             if (imageInput.files && imageInput.files.length > 0) {
                 imagedropArea.style.backgroundImage = `url('${URL.createObjectURL(imageInput.files[0])}')`;
-                filedropArea.style.backgroundImage = `url('${URL.createObjectURL(selectedImage)}')`;
+                filedropArea.style.backgroundImage = `url('${URL.createObjectURL(imageInput.files[0])}')`;
             }
         }
 
-        alert(`Selected ${type} file: ${imageInput}, Size: ${fileInput} bytes`);
+        alert(`Selected ${type} file: ${imageInput.files[0].name}, Size: ${imageInput.files[0].size} bytes`);
     }
 }
 
