@@ -19,7 +19,7 @@ class Framework(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField(max_length=20)
-    category_image = models.ImageField(null=False, upload_to='languages/')
+    category_image = models.ImageField(null=True, upload_to='languages/', default="book_cover/bg2.png")
     category_description = models.CharField(max_length=50)
     updated_at = models.DateTimeField(auto_now=True)
 

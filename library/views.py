@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
+
+from .forms import MainBooksForm
 from .models import MainBooks, Category, Framework
 
 api_key = 'AIzaSyCTm9EWtvOvEtiRIlnIH5sH0XETPz8Mf3A'
 query = "java"
+
 
 @login_required(login_url='login')
 def home(request):
@@ -35,6 +38,7 @@ def home(request):
     }
 
     return render(request, 'library/index.html', context)
+
 
 @login_required(login_url='login')
 def fetch_books_data(request):
@@ -77,6 +81,7 @@ def frameworks(request):
 
 import requests
 
+
 @login_required(login_url='login')
 def book_description(request, description):
     base_url = 'https://www.googleapis.com/books/v1/volumes'
@@ -100,3 +105,33 @@ def book_description(request, description):
             })
 
     return render(request, 'library/book_description.html', {"bookinfo": datainfo})
+
+
+@login_required(login_url='login')
+def bookupload(request):
+    if request.method == 'POST':
+        form = MainBooksForm(request.POST, request.FILES)
+        if form.is_valid():
+            if request.user.is_authenticated:
+                category_name = form.cleaned_data['category']
+                topic, created = Category.objects.get_or_create(category_name=category_name)
+                MainBooks.objects.create(
+                    title=form.cleaned_data['title'],
+                    description=form.cleaned_data['description'],
+                    topic=topic,
+                    auther=request.user.username,
+                    image=form.cleaned_data['image'],
+                    book=form.cleaned_data['book'],
+                    type=form.cleaned_data['type'],
+                    amount=form.cleaned_data['amount'],
+                    category=form.cleaned_data['category'],
+                )
+                return redirect('libraryhome')
+            else:
+                return render(request, 'socialmedia/login_register.html')
+        else:
+            print("Form is not valid. Please check the form data.")
+    else:
+        form = MainBooksForm()
+    context = {'form': form}
+    return render(request, 'library/fileUpload.html', context)

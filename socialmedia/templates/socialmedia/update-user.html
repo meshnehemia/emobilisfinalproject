@@ -48,12 +48,22 @@
     <script>
         const label = document.getElementById('imagelabel');
         const input = document.querySelector('[name="avator"]');
-        const myimg = document.querySelector('.myimage')
+        const myimg = document.querySelector('.myimage');
+        let upload_image = myimg.src;
         label.addEventListener('click',(e)=>{
             input.click();
         });
-        input.onchange = function (){
-            myimg.src = URL.createObjectURL(input.files[0]);
+        input.onchange = function () {
+            let file = input.files[0];
+            let name = file.name;
+            let regex = /\.(gif|jpg|jpeg|png)$/i;
+            if (regex.test(name)) {
+                myimg.src = URL.createObjectURL(input.files[0]);
+
+            } else {
+                alert("incorrect input file or the file is not image");
+
+            }
         }
     </script>
 {% endblock content %}
