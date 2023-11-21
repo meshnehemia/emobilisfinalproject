@@ -207,12 +207,13 @@
                                     {#                                        <span class=" qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>#}
 
                                     <div class="d-flex justify-content-between">
-                                        {% if book.type == "sale" %}
-                                            <span class="price btn btn-warning">ksh{{ book.amount }}</span>
-                                        {% else %}
-                                            <a href="{% url 'editbook' book.id %}"><span class="price btn btn-warning">view</span></a>
-                                        {% endif %}
-                                        <span class="price btn btn-success"> read</span>
+{#                                        {% if book.type == "sale" %}#}
+{#                                            <span class="price btn btn-warning">ksh{{ book.amount }}</span>#}
+{#                                        {% else %}#}
+{#                                            <a href="{% url 'editbook' book.id %}"><span class="price btn btn-warning">view</span></a>#}
+{#                                        {% endif %}#}
+{#                                        <span class="price btn btn-success"> read</span>#}
+                                        <a href="{% url 'MainbookDescription' book.id  %}" style="width: 100%; background-color: #0f5132; display: flex; justify-content: center; padding: 10px 0; border-radius: 20px">view book</a>
                                     </div>
                                 </div>
                             {% endfor %}

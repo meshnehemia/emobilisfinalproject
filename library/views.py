@@ -1,10 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+
+from .credentials import MpesaAccessToken, LipanaMpesaPpassword
 from .forms import MainBooksForm
-from .models import MainBooks, Category, Framework
+from .models import MainBooks, Category, Framework, BookBought
 
 api_key = 'AIzaSyCTm9EWtvOvEtiRIlnIH5sH0XETPz8Mf3A'
 query = "java"
+user = ''
 
 
 @login_required(login_url='login')
@@ -150,3 +154,55 @@ def edit_book(request, pk):
         form = MainBooksForm(instance=book)
     context = {'form': form, 'book': book}
     return render(request, 'library/edit_book.html', context)
+
+
+def mainbookinformation(request, pk):
+    book = MainBooks.objects.get(pk=pk)
+    try:
+        customer = BookBought.objects.get(customer=request.user,book=book)
+    except BookBought.DoesNotExist:
+        customer = ''
+    context = {"book": book, "customer": customer}
+    return render(request, 'library/mainBookDescription.html', context)
+
+
+def buybook(request, pk):
+    book = get_object_or_404(MainBooks, pk=pk)
+
+    if request.method == 'POST':
+        phone = request.POST['phone']
+        amount = int(book.amount)
+        access_token = MpesaAccessToken.validated_mpesa_access_token
+        api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+        headers = {"Authorization": "Bearer %s" % access_token}
+        mpesa_request = {
+            "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+            "Password": LipanaMpesaPpassword.decode_password,
+            "Timestamp": LipanaMpesaPpassword.lipa_time,
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": amount,
+            "PartyA": 254757316903,
+            "PartyB": LipanaMpesaPpassword.Business_short_code,
+            "PhoneNumber": phone,
+            "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+            "AccountReference": f"mesh library username: {request.user.username} {book.title}",
+            "TransactionDesc": "Web Development Charges"
+        }
+        requests.post(api_url, json=mpesa_request, headers=headers)
+        BookBought.objects.create(
+            book=book,
+            customer=request.user,
+            amount=amount
+        )
+        try:
+            cm = BookBought.objects.get(customer=request.user, book=book)
+        except BookBought.DoesNotExist:
+            cm = ''
+        context = {"book": book, "customer": cm}
+        return render(request, 'library/mainBookDescription.html', context)
+    try:
+        customer = BookBought.objects.get(customer=request.user, book=book)
+    except BookBought.DoesNotExist:
+        customer = None
+    context = {"book": book, "customer": customer}
+    return render(request, 'library/buybook.html', context)

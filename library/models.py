@@ -49,3 +49,12 @@ class MainBooks(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class BookBought(models.Model):
+    book = models.ForeignKey(MainBooks, null=False, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.book.title
