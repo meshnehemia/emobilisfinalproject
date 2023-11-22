@@ -5,7 +5,7 @@
 {% block head %}
 {% endblock %}
 {% block content %}
-    <table class="table table-info" style="margin:0 auto; width: 80%;border: 2px solid green">
+    <table class="table table-info" style="margin:0 auto; width: 80%;border: 2px solid green;text-align: left">
         <caption>my book</caption>
         <thead class="table-dark w-50">
 
@@ -24,11 +24,11 @@
         {% for book in books %}
             <tr class="w-100 btn-success px-3"
                 style="display: flex; justify-content: space-between;padding:3px 30px">
-                <td><a href="{% url 'bookinfosale' book.book.title %}"><img src="{{ book.book.image.url }}" alt="cover" style="height: 100px; width: 80px;"></a></td>
-                <td>{{ book.book.title }}</td>
-                <td><a href="{% url 'customerpurchase' book.customer.username %}">{{ book.customer.username }}</a></td>
-                <td>{{ book.date }}</td>
-                <td>{{ book.amount }}</td>
+                <td style="width: 40%"><a href="{% url 'bookinfosale' book.book.title %}"><img src="{{ book.book.image.url }}" alt="cover" style="height: 100px; width: 80px;"></a></td>
+                <td style="width: 30%">{{ book.book.title }}</td>
+                <td style="width: 20%"><a href="{% url 'customerpurchase' book.customer.username %}">{{ book.customer.username }}</a></td>
+                <td style="width: 30% ;text-align: right">{{ book.date }}</td>
+                <td style="width: 40%; text-align: right">{{ book.amount }}</td>
                 <script>amount += {{ book.amount }};</script>
             </tr>
         {% endfor %}

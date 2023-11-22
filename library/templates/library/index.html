@@ -14,8 +14,9 @@
 {% block content %}
     <div style="position:fixed; top:70px; overflow-y: scroll; height: 650px;width: 100%">
         <div style="background-image: linear-gradient(rgba(126,120,120,0.5),rgba(2,84,2,0.5),rgba(59,15,82,0.5)),url('{% static "images/img_1.png" %}');background-repeat: no-repeat;background-size: cover;background-position: center;height: 100%; width: 100%">
-
-
+            <div class="d-flex justify-content-end " style="background-color: #0f5132">
+                <a href="{% url 'mybook' %}" class="btn btn-secondary"><h2 class="section-title" style="color: white;">MY Library</h2></a>
+            </div>
             <div class="swiper main-swiper w-100 h-75 d-flex justify-content-center align-bottom align-items-baseline">
                 <div class="swiper-wrapper">
                     {% for book in main_books %}
@@ -23,13 +24,16 @@
                             <div class="row banner-content p-5 mt-5">
                                 <div class="content-wrapper col-md-7 w-100 h-100 text-center text-white justify-content-center align-items-center al"
                                      style="height: 50%">
-                                    <div class="categories my-3" style="font-size: 20px; font-weight: bolder;">{{ book.title }}</div>
+                                    <div class="categories my-3"
+                                         style="font-size: 20px; font-weight: bolder;">{{ book.title }}</div>
                                     <h3 class="display-4">{{ book.auther.username }}</h3>
                                     <p class="text-white" style="color: whitesmoke">{{ book.description }}</p>
-                                    <img src="{{ book.image.url }}" alt="bookcover" style="width: 100px ; height: 150px">
+                                    <img src="{{ book.image.url }}" alt="bookcover"
+                                         style="width: 100px ; height: 150px">
                                     <br>
                                     <a href="{% url 'MainbookDescription' book.id %}"
-                                       class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3 bg-warning">view book now</a>
+                                       class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3 bg-warning">view
+                                        book now</a>
                                 </div>
                             </div>
                         </div>
@@ -125,9 +129,6 @@
                     <div class="col-md-12">
                         <div class="section-header d-flex flex-wrap justify-content-between mb-5">
                             <h2 class="section-title" style="color: whitesmoke">Programming languages available</h2>
-                            <a href="{% url 'newcategory' %}" class="btn btn-secondary"><h2 class="section-title"
-                                                                                            style="color: white;">ADD
-                                Language</h2></a>
                             <div class="d-flex align-items-center">
                                 <a href="#" class="btn-link text-decoration-none">View All Languages →</a>
                                 <div class="swiper-buttons">
@@ -213,9 +214,6 @@
                     <div class="col-md-12">
                         <div class="section-header d-flex flex-wrap justify-content-between my-5">
                             <h2 class="section-title" style="color: white;">RECENT BOOKS</h2>
-                            <a href="{% url 'newBook' %}" class="btn btn-secondary"><h2 class="section-title"
-                                                                                        style="color: white;">ADD
-                                BOOK</h2></a>
                             <div class="d-flex align-items-center">
                                 <a href="#" class="btn-link text-decoration-none">View All View all books →</a>
                                 <div class="swiper-buttons">
@@ -315,7 +313,7 @@
                 <a href="#" class="btn btn-warning me-2 mb-2 text-white">Sweet Vanilla Yogurt</a>
             </div>
         </section>
-       {% include 'library/footer.html' %}
+        {% include 'library/footer.html' %}
         <script src="{% static 'library/js/jquery-1.11.0.min.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

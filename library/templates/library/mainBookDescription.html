@@ -48,6 +48,7 @@
         {% if book.type == 'sale' %}
             {% if request.user == book.auther %}
                 <a href="{% url 'editbook' book.id %}" class="btn btn-danger">Edit book</a>
+                <a href="{% url 'bookinfosale' book.title %}" class="btn btn-danger">Book sales</a>
                 <a href="{% url 'deletebook' book.id %}" class="btn btn-danger">Delete book</a>
                 <a href="{{ book.book.url }}" class="btn btn-success">read</a>
                 <a href="{% url 'libraryhome' %}" class="btn btn-warning">back</a>

@@ -292,3 +292,9 @@ def checkcustomerpurches(request, customer):
     getbooks = BookBought.objects.filter(customer__username=customer, book__auther=request.user).order_by('-date')
     context = {"books": getbooks}
     return render(request, 'library/bookPayment.html', context)
+
+
+def mybooks(request):
+    mybooks = MainBooks.objects.filter(auther=request.user)
+    context = {"main_books": mybooks}
+    return render(request, 'library/mybooks.html', context)

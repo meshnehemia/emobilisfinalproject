@@ -6,6 +6,7 @@ urlpatterns = [
     path('uploadfile/', views.bookupload, name='newBook'),
     path('addcategory/', views.addcategory, name='newcategory'),
     path('sales/', views.checkmytotalsales, name='info'),
+    path('mybooks/', views.mybooks, name='mybook'),
     path('forsale/<str:title>', views.checkbooksales, name='bookinfosale'),
     path('cpurchase/<str:customer>', views.checkcustomerpurches, name='customerpurchase'),
     path('editfile/<int:pk>', views.edit_book, name='editbook'),
