@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -82,7 +83,13 @@ def main_books(request):
     if search == 'none':
         books = MainBooks.objects.all().order_by('-updated_at')
     else:
-        books = MainBooks.objects.filter(category__category_name__contains=search).order_by('-updated_at')
+        books = MainBooks.objects.filter(
+            Q(title__icontains=query) |
+            Q(auther__name__contains=query) |
+            Q(auther__username__contains=query) |
+            Q(auther__email__contains=query) |
+            Q(type__contains=query)
+        ).order_by('-updated_at')
     return books
 
 
@@ -224,13 +231,9 @@ def buybook(request, pk):
 
 
 def searchwithcategory(request, ctname):
-    # global query, search
-    # if request.method == 'GET':
-    #     query = request.GET.get('search', '')
-    #     search = query
-    # else:
-    #     query = ctname
-    #     search = ctname
+    global query, search
+    query = ctname
+    search = ctname
     return home(request)
 
 
