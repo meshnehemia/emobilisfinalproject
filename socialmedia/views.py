@@ -189,7 +189,7 @@ def activityPage(request):
     return render(request, 'socialmedia/activity.html', context)
 
 
-def authenticated_user(request):
-    if request.user.is_authenticated:
-        return request.user
-    return render(request, 'socialmedia/login_register.html', context)
+# def authenticated_user(request):
+#     if request.user.is_authenticated:
+#         return request.user
+#     return render(request, 'socialmedia/login_register.html', context)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import MainBooks
+from .models import MainBooks, Category
 
 
 class MainBooksForm(forms.ModelForm):
@@ -7,3 +7,9 @@ class MainBooksForm(forms.ModelForm):
         model = MainBooks
         fields = '__all__'
         exclude = ['auther']
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'

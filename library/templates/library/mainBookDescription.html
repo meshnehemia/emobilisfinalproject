@@ -48,6 +48,7 @@
         {% if book.type == 'sale' %}
             {% if request.user == book.auther %}
                 <a href="{% url 'editbook' book.id %}" class="btn btn-danger">Edit book</a>
+                <a href="{% url 'deletebook' book.id %}" class="btn btn-danger">Delete book</a>
                 <a href="{{ book.book.url }}" class="btn btn-success">read</a>
                 <a href="{% url 'libraryhome' %}" class="btn btn-warning">back</a>
             {% elif request.user == customer.customer %}
@@ -60,10 +61,13 @@
         {% else %}
             {% if request.user == book.auther %}
                 <a href="{% url 'editbook' book.id %}" class="btn btn-danger">Edit book</a>
+                <a href="{% url 'deletebook' book.id %}" class="btn btn-danger">Delete book</a>
             {% endif %}
             <a href="{{ book.book.url }}" class="btn btn-success">read</a>
             <a href="{% url 'libraryhome' %}" class="btn btn-warning">back</a>
         {% endif %}
         </div>
     </div>
+    <br><br>
+    {% include 'library/footer.html' %}
 {% endblock content %}

@@ -41,7 +41,7 @@ class MainBooks(models.Model):
     image = models.ImageField(null=False, upload_to='book_cover/')
     book = models.FileField(null=False, upload_to='books/')
     type = models.CharField(max_length=10, choices=option, default='free')
-    amount = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    amount = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, default=1)
 
     class Meta:

@@ -28,239 +28,246 @@
     </script>
 {% endblock head %}
 {% block content %}
-    <div style="width: 100%">
-        <div style="width: 100%">
-            <div class="slider">
-                <div class="callbacks_container play_video">
-                    <ul class="rslides" id="slider">
-                        <li><img src="{{ response.0.thumbnail }}" class="img-responsive" alt=""/>
-                            <div class="button">
-                                <a href="{{ response.0.url }}" class="hvr-shutter-out-horizontal watch_now">Watch
-                                    Now</a>
-                            </div>
-                        </li>
-                        <li><img src="{{ response.1.thumbnail }}" class="img-responsive" alt=""/>
-                            <div class="button">
-                                <a href="{{ response.1.url }}" class="hvr-shutter-out-horizontal watch_now">Watch
-                                    Now</a>
-                            </div>
-                        </li>
-                        <li><img src="{{ response.2.thumbnail }}" class="img-responsive" alt=""/>
-                            <div class="button">
-                                <a href="{{ response.2.url }}" class="hvr-shutter-out-horizontal watch_now">Watch
-                                    Now</a>
-                            </div>
-                        </li>
-                    </ul>
+    <div style="width: 100%; position: fixed;top: 70px; overflow-y: scroll; height: 680px">
+        <div style="width: 100%;">
+            <div style="width: 100%;">
+                <div class="slider">
+                    <div class="callbacks_container play_video">
+                        <ul class="rslides" id="slider">
+                            <li><img src="{{ response.0.thumbnail }}" class="img-responsive" alt=""/>
+                                <div class="button">
+                                    <a href="{{ response.0.url }}" class="hvr-shutter-out-horizontal watch_now">Watch
+                                        Now</a>
+                                </div>
+                            </li>
+                            <li><img src="{{ response.1.thumbnail }}" class="img-responsive" alt=""/>
+                                <div class="button">
+                                    <a href="{{ response.1.url }}" class="hvr-shutter-out-horizontal watch_now">Watch
+                                        Now</a>
+                                </div>
+                            </li>
+                            <li><img src="{{ response.2.thumbnail }}" class="img-responsive" alt=""/>
+                                <div class="button">
+                                    <a href="{{ response.2.url }}" class="hvr-shutter-out-horizontal watch_now">Watch
+                                        Now</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="banner_desc">
+                    </div>
                 </div>
-                <div class="banner_desc">
-                </div>
-            </div>
-            <div class="content">
-                <div class="box_1">
-                    <h1 class="m_2">Featured Movies</h1>
-                    <div class="search">
-                        <form method="GET" id="searchForm" style="width: 800px" action="{% url 'search' %}">
-                            <label>
-                                <input type="text" placeholder="Search..." style="width:700px" class="bg-danger" name="query"
-                                       id="queryField">
-                            </label>
-                            <input type="submit" value="search" class="btn"
-                                   style="background-color: #0a3622; width: 150px; height:100%">
-                        </form>
+                <div class="content">
+                    <div class="box_1">
+                        <h1 class="m_2">Featured Movies</h1>
+                        <div class="search">
+                            <form method="GET" id="searchForm" style="width: 800px" action="{% url 'search' %}">
+                                <label>
+                                    <input type="text" placeholder="Search..." style="width:700px" class="bg-danger"
+                                           name="query"
+                                           id="queryField">
+                                </label>
+                                <input type="submit" value="search" class="btn"
+                                       style="background-color: #0a3622; width: 150px; height:100%">
+                            </form>
 
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="box_2">
-                    <div class="col-md-5 grid_3">
-                        <div class="row_1">
-                            <div class="col-md-6 grid_4">
-                                <a href="{{ response.3.url }}" class="watch_now ">
-                                    <div class="grid_2">
-                                        <img src="{{ response.3.thumbnail }}" class="img-responsive" alt=""/>
-                                        <div class="caption1">
-                                            {#						<ul class="list_3">#}
-                                            {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
-                                            {#				    	</ul>#}
-                                            <i class="icon4"> </i>
-                                            <p class="m_3">{{ response.3.title }}</p>
+                    <div class="box_2">
+                        <div class="col-md-5 grid_3">
+                            <div class="row_1">
+                                <div class="col-md-6 grid_4">
+                                    <a href="{{ response.3.url }}" class="watch_now ">
+                                        <div class="grid_2">
+                                            <img src="{{ response.3.thumbnail }}" class="img-responsive" alt=""/>
+                                            <div class="caption1">
+                                                {#						<ul class="list_3">#}
+                                                {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
+                                                {#				    	</ul>#}
+                                                <i class="icon4"> </i>
+                                                <p class="m_3">{{ response.3.title }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                                <a href="{{ response.4.url }}" class="watch_now ">
-                                    <div class="grid_2 col_1">
-                                        <img src="{{ response.4.thumbnail }}" class="img-responsive" alt=""/>
-                                        <div class="caption1">
-                                            {#						<ul class="list_3">#}
-                                            {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
-                                            {#				    	</ul>#}
-                                            <i class="icon4"> </i>
-                                            <p class="m_3">{{ response.4.title }}</p>
+                                    </a>
+                                    <a href="{{ response.4.url }}" class="watch_now ">
+                                        <div class="grid_2 col_1">
+                                            <img src="{{ response.4.thumbnail }}" class="img-responsive" alt=""/>
+                                            <div class="caption1">
+                                                {#						<ul class="list_3">#}
+                                                {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
+                                                {#				    	</ul>#}
+                                                <i class="icon4"> </i>
+                                                <p class="m_3">{{ response.4.title }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6 grid_7">
-                                <div class="col_2 text-dark">
-                                    <ul class="list_4">
-                                        <li><i class="icon1"> </i>
-                                            <p> title :{{ response.6.title }}</p></li>
-                                        {#			    			<li><i class="icon2"> </i><p>{{ response.6.description }}</p></li>#}
-                                        {#			    			<li><i class="icon3"> </i><p>src="{{ response.0.thumbnail }}"</p></li>#}
-                                        <li><i class="icon2"> </i>
-                                            <p> date :{{ response.6.published_at }}</p></li>
-                                        <div class="clearfix"></div>
-                                    </ul>
-                                    <div class="m_5"><a href="{{ response.6.url }}" class="watch_now "><img
-                                            src="{{ response.6.thumbnail }}" class="img-responsive" alt=""/></a></div>
-                                    <p class="m_3 text-dark">{{ response.6.title }}</p>
+                                    </a>
                                 </div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="row_2">
-                            <a href="{{ response.10.url }}" class="watch_now "><img src="{{ response.10.thumbnail }}"
-                                                                                    class="img-responsive" alt=""/></a>
-                        </div>
-                    </div>
-                    <div class="col-md-5 content_right">
-                        <div class="row_3">
-                            <div class="col-md-6 content_right-box"><a href="{{ response.5.url }}" class="watch_now ">
-                                <div class="grid_2">
-                                    <img src="{{ response.5.thumbnail }}" class="img-responsive" alt=""/>
-                                    <div class="caption1">
-                                        <ul class="list_5">
-                                            {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
+                                <div class="col-md-6 grid_7">
+                                    <div class="col_2 text-dark">
+                                        <ul class="list_4">
+                                            <li><i class="icon1"> </i>
+                                                <p> title :{{ response.6.title }}</p></li>
+                                            {#			    			<li><i class="icon2"> </i><p>{{ response.6.description }}</p></li>#}
+                                            {#			    			<li><i class="icon3"> </i><p>src="{{ response.0.thumbnail }}"</p></li>#}
+                                            <li><i class="icon2"> </i>
+                                                <p> date :{{ response.6.published_at }}</p></li>
+                                            <div class="clearfix"></div>
                                         </ul>
-                                        <i class="icon4 icon6"> </i>
-                                        <p class="m_3">{{ response.5.title }}</p>
+                                        <div class="m_5"><a href="{{ response.6.url }}" class="watch_now "><img
+                                                src="{{ response.6.thumbnail }}" class="img-responsive" alt=""/></a>
+                                        </div>
+                                        <p class="m_3 text-dark">{{ response.6.title }}</p>
                                     </div>
                                 </div>
-                            </a></div>
-                            <div class="col-md-6 grid_5"><a href="{{ response.7.url }}" class="watch_now">
-                                <div class="grid_2">
-                                    <img src="{{ response.7.thumbnail }}" class="img-responsive" alt=
-                                            ""/>
-                                    <div class="caption1">
-                                        <ul class="list_5">
-                                            {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
-                                        </ul>
-                                        <i class="icon4 icon6"> </i>
-                                        <p class="m_3">{{ response.7.title }}</p>
-                                    </div>
-                                </div>
-                            </a></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="video">
-                            <iframe width="100%" height=""
-                                    src="https://www.youtube.com/embed/OXGznpKZ_sA?si=3-TJh8UMrYb0n8le" frameborder="0"
-                                    allowfullscreen></iframe>
-                        </div>
-                        <div class="row_5">
-                            <div class="col-md-6">
-                                <div class="col_2">
-                                    <ul class="list_4">
-                                        <li><i class="icon1"> </i>
-                                            <p>title: {{ response.8.title }} </p></li>
-                                        <li><i class="icon2"> </i>
-                                            <p>title: {{ response.8.published_at }} </p></li>
-                                        <li><a href="{{ response.8.url }}" class="watch_now"><img
-                                                src="{{ response.8.thumbnail }}" alt=""></a></li>
-                                        <div class="clearfix"></div>
-                                    </ul>
-
-                                </div>
-                            </div>
-                            <div class="col-md-6 m_6"><a href="{{ response.9.url }}" class="watch_now">
-                                <img src="{{ response.9.thumbnail }}" class="img-responsive" alt=""/>
-                            </a></div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 grid_6">
-                        <div class="m_7"><a href="{{ response.11.url }}" class="watch_now "><img
-                                src="{{ response.11.thumbnail }}" class="img-responsive" alt=""/></a></div>
-                        <div class="caption1">
-                            <ul class="list_5">
-                                {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
-                            </ul>
-                            <i class="icon4 icon6"> </i>
-                            {#				    	<p class="m_3">{{ response.11.title }}</p>#}
-                        </div>
-                        <div class="col_2 col_3">
-                            <ul class="list_4">
-                                <li><i class="icon1"> </i>
-                                    <p>title: {{ response.12.title }}"</p></li>
-                                <li><i class="icon2"> </i>
-                                    <p>date: {{ response.12.published_at }}"</p></li>
-                                {#			    			<li><i class="icon3"> </i><p>src="{{ response.12.thumbnail }}"</p></li>#}
-                                {#			    			<li>Rating : &nbsp;&nbsp;<p><img src="{% static 'entertainment/images/rating1.png'%}" alt=""></p></li>#}
-                                {#			    			<li>Release : &nbsp;<span class="m_4">be blessed</span> </li>#}
                                 <div class="clearfix"></div>
-                            </ul>
-                            <div class="m_8"><a href="{{ response.12.url }}" class="watch_now "><img
-                                    src="{{ response.12.thumbnail }}" class="img-responsive" alt=""/></a></div>
+                            </div>
+                            <div class="row_2">
+                                <a href="{{ response.10.url }}" class="watch_now "><img
+                                        src="{{ response.10.thumbnail }}"
+                                        class="img-responsive" alt=""/></a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <div class="col-md-5 content_right">
+                            <div class="row_3">
+                                <div class="col-md-6 content_right-box"><a href="{{ response.5.url }}"
+                                                                           class="watch_now ">
+                                    <div class="grid_2">
+                                        <img src="{{ response.5.thumbnail }}" class="img-responsive" alt=""/>
+                                        <div class="caption1">
+                                            <ul class="list_5">
+                                                {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
+                                            </ul>
+                                            <i class="icon4 icon6"> </i>
+                                            <p class="m_3">{{ response.5.title }}</p>
+                                        </div>
+                                    </div>
+                                </a></div>
+                                <div class="col-md-6 grid_5"><a href="{{ response.7.url }}" class="watch_now">
+                                    <div class="grid_2">
+                                        <img src="{{ response.7.thumbnail }}" class="img-responsive" alt=
+                                                ""/>
+                                        <div class="caption1">
+                                            <ul class="list_5">
+                                                {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
+                                            </ul>
+                                            <i class="icon4 icon6"> </i>
+                                            <p class="m_3">{{ response.7.title }}</p>
+                                        </div>
+                                    </div>
+                                </a></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="video">
+                                <iframe width="100%" height=""
+                                        src="https://www.youtube.com/embed/OXGznpKZ_sA?si=3-TJh8UMrYb0n8le"
+                                        frameborder="0"
+                                        allowfullscreen></iframe>
+                            </div>
+                            <div class="row_5">
+                                <div class="col-md-6">
+                                    <div class="col_2">
+                                        <ul class="list_4">
+                                            <li><i class="icon1"> </i>
+                                                <p>title: {{ response.8.title }} </p></li>
+                                            <li><i class="icon2"> </i>
+                                                <p>title: {{ response.8.published_at }} </p></li>
+                                            <li><a href="{{ response.8.url }}" class="watch_now"><img
+                                                    src="{{ response.8.thumbnail }}" alt=""></a></li>
+                                            <div class="clearfix"></div>
+                                        </ul>
 
-    <div class="container">
-        <footer id="footer">
-            <div id="footer-3d">
-                <div class="gp-container">
-                    <span class="first-widget-bend"></span>
-                </div>
-            </div>
-            <div id="footer-widgets" class="gp-footer-larger-first-col">
-                <div class="gp-container">
-                    <div class="footer-widget footer-1">
-                        <div class="wpb_wrapper">
-                            <img src="{% static 'entertainment/images/f_logo.png' %}" alt=""/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 m_6"><a href="{{ response.9.url }}" class="watch_now">
+                                    <img src="{{ response.9.thumbnail }}" class="img-responsive" alt=""/>
+                                </a></div>
+                            </div>
                         </div>
-                        <br>
-                        <p>availability of the web based projects to support the entertainment</p>
-                        <p class="text">entertainment is best </p>
-                    </div>
-                    <div class="footer_box">
-                        <div class="col_1_of_3 span_1_of_3">
-                            <h3>fronted</h3>
-                            <ul class="first">
-                                <li>javascript</li>
-                                <li>css</li>
-                                <li>html</li>
-                            </ul>
-                        </div>
-                        <div class="col_1_of_3 span_1_of_3">
-                            <h3>marketable languages</h3>
-                            <ul class="first">
-                                <li>learn java</li>
-                                <li>learn python (django)</li>
-                                <li>learn c++</li>
-                            </ul>
-                        </div>
-                        <div class="col_1_of_3 span_1_of_3">
-                            <h3>Follow Us</h3>
-                            <ul class="first">
-                                <li><a href="https://www.facebook.com/micky.mesh.5">Facebook</a></li>
-                                <li><a href="https://twitter.com/meshnehemia7">Twitter</a></li>
-                            </ul>
-                            <div class="copy">
-                                <p>&copy; 2023 UnityNex <a href="" target="_blank"> meshack</a></p>
+                        <div class="col-md-2 grid_6">
+                            <div class="m_7"><a href="{{ response.11.url }}" class="watch_now "><img
+                                    src="{{ response.11.thumbnail }}" class="img-responsive" alt=""/></a></div>
+                            <div class="caption1">
+                                <ul class="list_5">
+                                    {#				    		<li><i class="icon5"> </i><p>3,548</p></li>#}
+                                </ul>
+                                <i class="icon4 icon6"> </i>
+                                {#				    	<p class="m_3">{{ response.11.title }}</p>#}
+                            </div>
+                            <div class="col_2 col_3">
+                                <ul class="list_4">
+                                    <li><i class="icon1"> </i>
+                                        <p>title: {{ response.12.title }}"</p></li>
+                                    <li><i class="icon2"> </i>
+                                        <p>date: {{ response.12.published_at }}"</p></li>
+                                    {#			    			<li><i class="icon3"> </i><p>src="{{ response.12.thumbnail }}"</p></li>#}
+                                    {#			    			<li>Rating : &nbsp;&nbsp;<p><img src="{% static 'entertainment/images/rating1.png'%}" alt=""></p></li>#}
+                                    {#			    			<li>Release : &nbsp;<span class="m_4">be blessed</span> </li>#}
+                                    <div class="clearfix"></div>
+                                </ul>
+                                <div class="m_8"><a href="{{ response.12.url }}" class="watch_now "><img
+                                        src="{{ response.12.thumbnail }}" class="img-responsive" alt=""/></a></div>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="clearfix"></div>
                 </div>
             </div>
+        </div>
+        <div class="container">
+            <footer id="footer">
+                <div id="footer-3d">
+                    <div class="gp-container">
+                        <span class="first-widget-bend"></span>
+                    </div>
+                </div>
+                <div id="footer-widgets" class="gp-footer-larger-first-col">
+                    <div class="gp-container">
+                        <div class="footer-widget footer-1">
+                            <div class="wpb_wrapper">
+                                <img src="{% static 'entertainment/images/f_logo.png' %}" alt=""/>
+                            </div>
+                            <br>
+                            <p>availability of the web based projects to support the entertainment</p>
+                            <p class="text">entertainment is best </p>
+                        </div>
+                        <div class="footer_box">
+                            <div class="col_1_of_3 span_1_of_3">
+                                <h3>fronted</h3>
+                                <ul class="first">
+                                    <li>javascript</li>
+                                    <li>css</li>
+                                    <li>html</li>
+                                </ul>
+                            </div>
+                            <div class="col_1_of_3 span_1_of_3">
+                                <h3>marketable languages</h3>
+                                <ul class="first">
+                                    <li>learn java</li>
+                                    <li>learn python (django)</li>
+                                    <li>learn c++</li>
+                                </ul>
+                            </div>
+                            <div class="col_1_of_3 span_1_of_3">
+                                <h3>Follow Us</h3>
+                                <ul class="first">
+                                    <li><a href="https://www.facebook.com/micky.mesh.5">Facebook</a></li>
+                                    <li><a href="https://twitter.com/meshnehemia7">Twitter</a></li>
+                                </ul>
+                                <div class="copy">
+                                    <p>&copy; 2023 UnityNex <a href="" target="_blank"> meshack</a></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
 
-        </footer>
+            </footer>
+        </div>
     </div>
+
     <script>
 
         const movie = document.getElementsByClassName('watch_now');

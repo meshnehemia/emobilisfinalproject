@@ -3,16 +3,23 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .credentials import MpesaAccessToken, LipanaMpesaPpassword
-from .forms import MainBooksForm
+from .forms import MainBooksForm, CategoryForm
 from .models import MainBooks, Category, Framework, BookBought
 
 api_key = 'AIzaSyCTm9EWtvOvEtiRIlnIH5sH0XETPz8Mf3A'
 query = "java"
 user = ''
+search = 'none'
 
 
 @login_required(login_url='login')
 def home(request):
+    check = request.GET.get('search', '')
+    if request.method == 'GET' and check != '':
+        global query
+        global search
+        query = request.GET.get('search', 'java')
+        search = query
     books_data = fetch_books_data(request)
     main_books_data = main_books(request)
     framework = frameworks(request)
@@ -21,13 +28,17 @@ def home(request):
     book2 = []
     book3 = []
     i = 0
+    k = 0
     for book in main_books_data:
-        if i < 3 and book.type == "free":
+        if k < 5 and book.type == "free":
             book1.append(book)
-        elif i < 5 and book.type == "free":
+            k += 1
+        elif k < 5 and book.type == "free":
             book2.append(book)
+            k += 1
         else:
-            book3.append(book)
+            pass
+        book3.append(book)
         i += 1
 
     context = {
@@ -55,19 +66,23 @@ def fetch_books_data(request):
         response.raise_for_status()
         books = []
         for book in response.json().get('items', []):
+            volume_info = book.get('volumeInfo', {})
+
             books.append({
                 "bookinfo": book.get('id', ''),
-                "title": book['volumeInfo'].get('title', ''),
-                "image": book['volumeInfo']['imageLinks'].get('thumbnail', ''),
+                "title": volume_info.get('title', ''),
+                "image": volume_info.get('imageLinks', {}).get('thumbnail', ''),
             })
 
         return books
     except requests.exceptions.RequestException as e:
         print(e)
 
-
 def main_books(request):
-    books = MainBooks.objects.all().order_by('-updated_at')
+    if search == 'none':
+        books = MainBooks.objects.all().order_by('-updated_at')
+    else:
+        books = MainBooks.objects.filter(category__category_name__contains=search).order_by('-updated_at')
     return books
 
 
@@ -159,7 +174,7 @@ def edit_book(request, pk):
 def mainbookinformation(request, pk):
     book = MainBooks.objects.get(pk=pk)
     try:
-        customer = BookBought.objects.get(customer=request.user,book=book)
+        customer = BookBought.objects.get(customer=request.user, book=book)
     except BookBought.DoesNotExist:
         customer = ''
     context = {"book": book, "customer": customer}
@@ -185,11 +200,11 @@ def buybook(request, pk):
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
             "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-            "AccountReference": f"mesh library username: {request.user.username} {book.title}",
+            "AccountReference": f"mesh library username: {request.user.username}: title {book.title}",
             "TransactionDesc": "Web Development Charges"
         }
         requests.post(api_url, json=mpesa_request, headers=headers)
-        BookBought.objects.create(
+        BookBought.objects.get_or_create(
             book=book,
             customer=request.user,
             amount=amount
@@ -206,3 +221,35 @@ def buybook(request, pk):
         customer = None
     context = {"book": book, "customer": customer}
     return render(request, 'library/buybook.html', context)
+
+
+def searchwithcategory(request, ctname):
+    # global query, search
+    # if request.method == 'GET':
+    #     query = request.GET.get('search', '')
+    #     search = query
+    # else:
+    #     query = ctname
+    #     search = ctname
+    return home(request)
+
+
+def addcategory(request):
+    category = CategoryForm()
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return home(request)
+    context = {"form": category}
+    return render(request, 'library/uploadCategory.html', context)
+
+
+def deletebook(request, pk):
+    try:
+        book = MainBooks.objects.get(pk=pk)
+        book.delete()
+    except MainBooks.DoesNotExist:
+        pass
+
+    return home(request)

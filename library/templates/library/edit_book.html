@@ -54,5 +54,6 @@
             <input type="submit" value="{% if form.instance %}UPDATE{% else %}SUBMIT BOOK{% endif %}" class="btn btn-success text-center w-75 d-flex justify-content-center m-auto" style="font-size: 20px">
         </form>
     </section>
+    {% include 'library/footer.html' %}
     <script src="{% static 'library/js/bookUpload.js' %}"></script>
 {% endblock %}
