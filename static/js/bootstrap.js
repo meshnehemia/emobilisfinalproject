@@ -657,7 +657,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap videochat-component.js
+   * Bootstrap base-component.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */

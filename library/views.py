@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .credentials import MpesaAccessToken, LipanaMpesaPpassword
@@ -79,6 +79,7 @@ def fetch_books_data(request):
     except requests.exceptions.RequestException as e:
         print(e)
 
+
 def main_books(request):
     if search == 'none':
         books = MainBooks.objects.all().order_by('-updated_at')
@@ -150,7 +151,9 @@ def bookupload(request):
                     amount=form.cleaned_data['amount'],
                     category=form.cleaned_data['category'],
                 )
-                return redirect('libraryhome')
+                book = MainBooks.objects.get(title=form.cleaned_data['title'], topic=topic,
+                                             description=form.cleaned_data['description'], auther=request.user, )
+                return mainbookinformation(request, book.pk)
             else:
                 return render(request, 'socialmedia/login_register.html')
         else:
@@ -160,22 +163,6 @@ def bookupload(request):
         form = MainBooksForm()
     context = {'form': form}
     return render(request, 'library/fileUpload.html', context)
-
-
-def edit_book(request, pk):
-    book = get_object_or_404(MainBooks, pk=pk)
-    if request.method == 'POST':
-        form = MainBooksForm(request.POST, request.FILES, instance=book)
-        if form.is_valid():
-            book_instance = form.save(commit=False)
-            category_name = form.cleaned_data['category'].category_name
-            book_instance.topic = category_name
-            book_instance.save()
-            return redirect('libraryhome')
-    else:
-        form = MainBooksForm(instance=book)
-    context = {'form': form, 'book': book}
-    return render(request, 'library/edit_book.html', context)
 
 
 def mainbookinformation(request, pk):
@@ -256,3 +243,52 @@ def deletebook(request, pk):
         pass
 
     return home(request)
+
+
+def edit_book(request, pk):
+    book = get_object_or_404(MainBooks, pk=pk)
+    if request.method == 'POST':
+        form = MainBooksForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            book_instance = form.save(commit=False)
+            category_name = form.cleaned_data['category'].category_name
+            book_instance.topic = category_name
+            book_instance.save()
+            return mainbookinformation(request, pk)
+    else:
+        form = MainBooksForm(instance=book)
+    context = {'form': form, 'book': book}
+    return render(request, 'library/edit_book.html', context)
+
+
+def checkmytotalsales(request):
+    books = MainBooks.objects.filter(auther=request.user)
+    getbooks = []
+
+    for book in books:
+        try:
+            get = BookBought.objects.filter(book_id__gt=book.id)
+            for add in get:
+                getbooks.append(add)
+        except BookBought.DoesNotExist:
+            pass
+
+    context = {"books": getbooks}
+    return render(request, 'library/bookPayment.html', context)
+
+
+def checkbooksales(request, title):
+    getbooks = BookBought.objects.filter(book__title=title, book__auther=request.user).order_by('-date')
+    books = BookBought.objects.all()
+    for book in books:
+        print(book.book.auther.email)
+        print(book.book.title)
+    context = {"books": getbooks}
+    return render(request, 'library/bookPayment.html', context)
+
+
+@login_required(login_url='login')
+def checkcustomerpurches(request, customer):
+    getbooks = BookBought.objects.filter(customer__username=customer, book__auther=request.user).order_by('-date')
+    context = {"books": getbooks}
+    return render(request, 'library/bookPayment.html', context)

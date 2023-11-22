@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block head %}
+{% endblock %}
+{% block content %}
+    <table class="table table-info" style="margin:0 auto; width: 80%;border: 2px solid green">
+        <caption>my book</caption>
+        <thead class="table-dark w-50">
+
+        <tr class="w-100 px-3"
+            style="color:whitesmoke;display:flex;text-align:left; justify-content: space-between;padding: 3px 30px ;background-color: rgba(17,71,82,0.5)">
+            <th class="col">Cover</th>
+            <th class="col">Title</th>
+            <th class="col">customer</th>
+            <th class="col">date</th>
+            <th class="col">amount</th>
+        </tr>
+        </thead>
+
+        <tbody style="position: fixed;height:600px;overflow-y: scroll; width:80%;">
+        <script>let amount = 0</script>
+        {% for book in books %}
+            <tr class="w-100 btn-success px-3"
+                style="display: flex; justify-content: space-between;padding:3px 30px">
+                <td><a href="{% url 'bookinfosale' book.book.title %}"><img src="{{ book.book.image.url }}" alt="cover" style="height: 100px; width: 80px;"></a></td>
+                <td>{{ book.book.title }}</td>
+                <td><a href="{% url 'customerpurchase' book.customer.username %}">{{ book.customer.username }}</a></td>
+                <td>{{ book.date }}</td>
+                <td>{{ book.amount }}</td>
+                <script>amount += {{ book.amount }};</script>
+            </tr>
+        {% endfor %}
+        <tr class="w-100 btn-success px-3" style="font-size:20px;display: flex; justify-content: space-between;padding:3px 30px;position: fixed;bottom: 0px;width: inherit;height: 30px;background-color: #022a1a;color: whitesmoke">
+            <td>total</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td class="amount"></td>
+
+        </tr>
+
+        </tbody>
+        </div>
+    </table>
+    <script>
+        document.querySelector('.amount').innerHTML = "" + amount;
+    </script>
+{% endblock %}

@@ -54,6 +54,7 @@ class MainBooks(models.Model):
 class BookBought(models.Model):
     book = models.ForeignKey(MainBooks, null=False, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True, null=True)
     amount = models.IntegerField(default=0)
 
     def __str__(self):
