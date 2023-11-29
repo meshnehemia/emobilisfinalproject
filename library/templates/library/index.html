@@ -146,8 +146,8 @@
                                 {% for ctr in category %}
                                     <a href="{% url 'searchbycategoty' ctr.category_name %}"
                                        class="nav-link category-item swiper-slide">
-                                        <img src="{{ ctr.category_image.url }}" alt="Category Thumbnail"#}
-                                             style="height:120%; width: 80%; margin-top: -50px">#}
+                                        <img src="{{ ctr.category_image.url }}" alt="Category Thumbnail"
+                                             style="height:120%; width: 80%; margin-top: -50px">
                                         <h3 class="category-title">{{ ctr.category_name }}</h3>
                                     </a>
                                 {% endfor %}
@@ -182,7 +182,7 @@
         {##}
         {#                    <div class="brand-carousel swiper">#}
         {#                        <div class="swiper-wrapper">#}
-        {#                            {% for book in framework %}#}
+        {#                            {% for book in categories %}#}
         {#                                <div class="swiper-slide">#}
         {#                                    <div class="card mb-3 p-3 rounded-4 shadow border-0">#}
         {#                                        <div class="row g-0">#}

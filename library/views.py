@@ -2,27 +2,64 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.views.decorators.csrf import csrf_exempt
 from .credentials import MpesaAccessToken, LipanaMpesaPpassword
 from .forms import MainBooksForm, CategoryForm
 from .models import MainBooks, Category, Framework, BookBought
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 api_key = 'AIzaSyCTm9EWtvOvEtiRIlnIH5sH0XETPz8Mf3A'
-query = "java"
 user = ''
-search = 'none'
 
 
 @login_required(login_url='login')
 def home(request):
+    search = 'python'
+    sr = ''
     check = request.GET.get('search', '')
     if request.method == 'GET' and check != '':
-        global query
-        global search
-        query = request.GET.get('search', 'java')
-        search = query
-    books_data = fetch_books_data(request)
-    main_books_data = main_books(request)
+        search = request.GET.get('search', 'java')
+        sr = search
+    books_data = fetch_books_data(request, search)
+    main_books_data = main_books(request, sr)
+    framework = frameworks(request)
+    category = categories(request)
+    book1 = []
+    book2 = []
+    book3 = []
+    i = 0
+    k = 0
+    for book in main_books_data:
+        if k < 5 and book.type == "free":
+            book1.append(book)
+            k += 1
+        elif k < 5 and book.type == "free":
+            book2.append(book)
+            k += 1
+        else:
+            pass
+        book3.append(book)
+        i += 1
+    context = {
+        "books": books_data,
+        "books2": book2,
+        "main_books": book1,
+        "category": category,
+        "categories": framework,
+        "book3": book3
+    }
+
+    return render(request, 'library/index.html', context)
+
+
+def searchhome(request, search):
+    check = request.GET.get('search', '')
+    if request.method == 'GET' and check != '':
+        search = request.GET.get('search', 'java')
+    books_data = fetch_books_data(request, search)
+    main_books_data = main_books(request, search)
     framework = frameworks(request)
     category = categories(request)
     book1 = []
@@ -47,7 +84,7 @@ def home(request):
         "books2": book2,
         "main_books": book1,
         "category": category,
-        "framework": framework,
+        "categories": framework,
         "book3": book3
     }
 
@@ -55,7 +92,7 @@ def home(request):
 
 
 @login_required(login_url='login')
-def fetch_books_data(request):
+def fetch_books_data(request, query):
     base_url = 'https://www.googleapis.com/books/v1/volumes'
     params = {
         'q': query,
@@ -80,16 +117,18 @@ def fetch_books_data(request):
         print(e)
 
 
-def main_books(request):
-    if search == 'none':
+def main_books(request, search):
+    if search == 'none' or search == '' or search == None:
         books = MainBooks.objects.all().order_by('-updated_at')
     else:
         books = MainBooks.objects.filter(
-            Q(title__icontains=query) |
-            Q(auther__name__contains=query) |
-            Q(auther__username__contains=query) |
-            Q(auther__email__contains=query) |
-            Q(type__contains=query)
+            Q(title__icontains=search) |
+            Q(auther__name__icontains=search) |
+            Q(auther__username__icontains=search) |
+            Q(auther__email__icontains=search) |
+            Q(type__icontains=search) |
+            Q(category__category_name__icontains=search) |
+            Q(description__icontains=search)
         ).order_by('-updated_at')
     return books
 
@@ -132,18 +171,17 @@ def book_description(request, description):
     return render(request, 'library/book_description.html', {"bookinfo": datainfo})
 
 
+@csrf_exempt
 @login_required(login_url='login')
 def bookupload(request):
     if request.method == 'POST':
         form = MainBooksForm(request.POST, request.FILES)
         if form.is_valid():
             if request.user.is_authenticated:
-                category_name = form.cleaned_data['category']
-                topic, created = Category.objects.get_or_create(category_name=category_name)
-                MainBooks.objects.create(
+                book, book_created = MainBooks.objects.get_or_create(
                     title=form.cleaned_data['title'],
                     description=form.cleaned_data['description'],
-                    topic=topic,
+                    topic=form.cleaned_data['topic'],
                     auther=request.user,
                     image=form.cleaned_data['image'],
                     book=form.cleaned_data['book'],
@@ -151,14 +189,17 @@ def bookupload(request):
                     amount=form.cleaned_data['amount'],
                     category=form.cleaned_data['category'],
                 )
-                book = MainBooks.objects.get(title=form.cleaned_data['title'], topic=topic,
-                                             description=form.cleaned_data['description'], auther=request.user, )
-                return mainbookinformation(request, book.pk)
+
+                if book_created:
+                    # return JsonResponse({'success': True, 'redirect_url': f'/library/mainbookinformation/{book.pk}/'})
+                    # return mainbookinformation(request, book.pk)
+                    return JsonResponse({'success': 'success'})
+                else:
+                    return JsonResponse({'success': False, 'error': form.errors})
             else:
-                return render(request, 'socialmedia/login_register.html')
+                return JsonResponse({'success': False, 'error': form.errors})
         else:
-            print("Form is not valid. Please check the form data.")
-            print(form.errors)
+            return JsonResponse({'success': False, 'error': form.errors})
     else:
         form = MainBooksForm()
     context = {'form': form}
@@ -175,6 +216,7 @@ def mainbookinformation(request, pk):
     return render(request, 'library/mainBookDescription.html', context)
 
 
+@csrf_exempt
 def buybook(request, pk):
     book = get_object_or_404(MainBooks, pk=pk)
 
@@ -193,7 +235,7 @@ def buybook(request, pk):
             "PartyA": 254757316903,
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
-            "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+            "CallBackURL": "https://a8f3-102-215-13-135.ngrok-free.app/mpesa-callback/",
             "AccountReference": f"mesh library username: {request.user.username}: title {book.title}",
             "TransactionDesc": "Web Development Charges"
         }
@@ -202,6 +244,7 @@ def buybook(request, pk):
             book=book,
             customer=request.user,
             amount=amount
+
         )
         try:
             cm = BookBought.objects.get(customer=request.user, book=book)
@@ -217,13 +260,38 @@ def buybook(request, pk):
     return render(request, 'library/buybook.html', context)
 
 
+
+
+@csrf_exempt
+def mpesa_callback(request):
+    if request.method == 'POST':
+        # Parse the JSON data from the callback
+        callback_data = json.loads(request.body)
+
+        # Extract relevant information from the callback_data
+        transaction_status = callback_data.get('Body', {}).get('stkCallback', {}).get('ResultCode')
+
+        # Check if the transaction was canceled (adjust the status code based on Safaricom's documentation)
+        if transaction_status == 'Cancelled':
+            return HttpResponse("cancelled")
+        # Update your application state to reflect the cancellation (mark the transaction as canceled in your database, for example)
+
+        # Notify the user about the cancellation (you might want to implement this based on your application's requirements)
+
+        # Perform any necessary cleanup steps
+
+        # Return a response to Safaricom
+        return HttpResponse(json.dumps({"ResultCode": "0", "ResultDesc": "Success"}), content_type='application/json')
+
+    # Handle other HTTP methods if needed
+    return HttpResponse(status=405)
+
+
 def searchwithcategory(request, ctname):
-    global query, search
-    query = ctname
-    search = ctname
-    return home(request)
+    return searchhome(request, ctname)
 
 
+@csrf_exempt
 def addcategory(request):
     category = CategoryForm()
     if request.method == 'POST':
@@ -235,16 +303,19 @@ def addcategory(request):
     return render(request, 'library/uploadCategory.html', context)
 
 
+@csrf_exempt
 def deletebook(request, pk):
+    book = MainBooks.objects.get(pk=pk)
     try:
-        book = MainBooks.objects.get(pk=pk)
-        book.delete()
+        if request.method == 'POST':
+            book.delete()
+            return home(request)
     except MainBooks.DoesNotExist:
         pass
+    return render(request, 'library/delete.html', {"obj": book.title})
 
-    return home(request)
 
-
+@csrf_exempt
 def edit_book(request, pk):
     book = get_object_or_404(MainBooks, pk=pk)
     if request.method == 'POST':

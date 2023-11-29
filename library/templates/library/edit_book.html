@@ -26,11 +26,11 @@
                             <div class="d-flex justify-content-center align-items-center flex-column mt-5"
                                  style="height: 75%">
                                 <div id="imageDropArea" class="drop-area"
-                                     style="height:100%;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% if form.instance.image %}{{ form.instance.image.url }}{% else %}{% static "images/img.png" %}{% endif %}');background-repeat: no-repeat; background-size: cover;background-position: center">
+                                     style="height:250px;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% if form.instance.image %}{{ form.instance.image.url }}{% else %}{% static "images/img.png" %}{% endif %}');background-repeat: no-repeat; background-size: cover;background-position: center">
                                     <p class="text-white">Drag and drop cover here or click to select</p>
                                 </div>
                                 <p class="d-none">{{ formfield }}</p>
-                                <label for="{{ formfield.name }}" class="form-label btn btn-success mt-3 w-100 text-center" style="font-size: 20px; background-color: dimgrey;">Upload the cover</label>
+{#                                <label for="id_image" class="form-label btn btn-success mt-3 w-100 text-center" style="font-size: 20px; background-color: dimgrey;">Upload the cover</label>#}
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -41,11 +41,11 @@
                             <div class="d-flex justify-content-center align-items-center flex-column mt-5"
                                  style="height: 75%">
                                 <div id="bookDropArea" class="drop-area"
-                                     style="height:100%;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% if form.instance.book %}{{ form.instance.book.url }}{% else %}{% static "images/img.png" %}{% endif %}');background-repeat: no-repeat; background-size: cover;background-position: center">
+                                     style="height:250px;background-image:linear-gradient(#0d5e3e,rgba(24,128,86,0.5),#0d5e3e),url('{% if form.instance.book %}{{ form.instance.book.url }}{% else %}{% static "images/img.png" %}{% endif %}');background-repeat: no-repeat; background-size: cover;background-position: center">
                                     <p class="text-white">Drag and drop files here or click to select</p>
                                 </div>
                                 <p class="d-none">{{ formfield }}</p>
-                                <label for="{{ formfield.name }}" class="form-label btn btn-success mt-3 w-100 text-center" style="font-size: 20px; background-color: dimgrey;">Upload book here</label>
+{#                                <label for="id_book" class="form-label btn btn-success mt-3 w-100 text-center" style="font-size: 20px; background-color: dimgrey;">Upload book here</label>#}
                             </div>
                         {% endif %}
                     {% endfor %}

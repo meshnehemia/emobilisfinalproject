@@ -13,7 +13,7 @@
                 <a href="{% url 'newBook' %}" class="btn btn-secondary"><h2 class="section-title" style="color: white;">
                     ADD BOOK</h2></a>
                 <a href="{% url 'newcategory' %}" class="btn btn-secondary"><h2 class="section-title"
-                                                                                style="color: white;">ADD Language</h2>
+                                                                                style="color: white;">ADD Category</h2>
                 </a>
                 <a href="{% url 'info' %}" class="btn btn-secondary"><h2 class="section-title" style="color: white;">My
                     sales</h2></a>
@@ -60,7 +60,7 @@
             <h1>My books</h1>
             <div class="main3">
                 {% for book in main_books %}
-                    <div class="element w-25 mx-auto bg-white rounded" style="height: 300px">
+                    <div class="element mx-auto bg-white rounded" style="height: 300px; min-width: 23%;margin-top: 10px">
                         <div class="mx-auto" style="width: 90%">
                             <img src="{{ book.image.url }}" alt="{{ book.title }}" style="width:100%; height: 200px"
                                  class="mt-3">

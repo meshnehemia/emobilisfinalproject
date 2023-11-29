@@ -40,7 +40,6 @@
         document.querySelector("input[name='category_image']").addEventListener('change', (e) => {
             const fileInput = e.target;
             const dropArea = document.querySelector('.drop-area');
-            alert('yes');
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 const imageUrl = URL.createObjectURL(file);
