@@ -64,6 +64,8 @@
                                                 <th scope="col">Video Name</th>
                                                 <th scope="col">Time</th>
                                                 <th scope="col">Client</th>
+                                                <th scope="col">Number</th>
+                                                <th scope="col">ref</th>
                                                 <th scope="col">Cost</th>
                                             </tr>
                                             </thead>
@@ -75,6 +77,8 @@
                                                     <td>{{ video.video.video_title }}</td>
                                                     <td>{{ video.date }}</td>
                                                     <td>{{ video.buyer.username }}</td>
+                                                    <td>{{ video.number }}</td>
+                                                    <td>{{ video.ref }}</td>
                                                     <td>{{ video.cost }}</td>
                                                 <script>totel += {{ video.cost }}</script>
                                                 </tr>
@@ -83,6 +87,8 @@
                                             <tfoot>
                                             <tr class="sticky-row">
                                                 <td>total</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>

@@ -1,11 +1,15 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+
+from socialmedia.models import User
 from .credentials import MpesaAccessToken, LipanaMpesaPpassword
 from .forms import MainBooksForm, CategoryForm
-from .models import MainBooks, Category, Framework, BookBought
+from .models import MainBooks, Category, Framework, BookBought, UsersPayment
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -216,12 +220,58 @@ def mainbookinformation(request, pk):
     return render(request, 'library/mainBookDescription.html', context)
 
 
+# @csrf_exempt
+# def buybook(request, pk):
+#     book = get_object_or_404(MainBooks, pk=pk)
+#
+#     if request.method == 'POST':
+#         phone = request.POST['phone']
+#         amount = int(book.amount)
+#         access_token = MpesaAccessToken.validated_mpesa_access_token
+#         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+#         headers = {"Authorization": "Bearer %s" % access_token}
+#         mpesa_request = {
+#             "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+#             "Password": LipanaMpesaPpassword.decode_password,
+#             "Timestamp": LipanaMpesaPpassword.lipa_time,
+#             "TransactionType": "CustomerPayBillOnline",
+#             "Amount": amount,
+#             "PartyA": 254757316903,
+#             "PartyB": LipanaMpesaPpassword.Business_short_code,
+#             "PhoneNumber": phone,
+#             "CallBackURL": "https://musing-fog-55251.pktriot.net/mpesa-callback/",
+#             "AccountReference": f"mesh library username: {request.user.username}: title {book.title}",
+#             "TransactionDesc": "Web Development Charges"
+#         }
+#         requests.post(api_url, json=mpesa_request, headers=headers)
+#         BookBought.objects.get_or_create(
+#             book=book,
+#             customer=request.user,
+#             amount=amount
+#
+#         )
+#         try:
+#             cm = BookBought.objects.get(customer=request.user, book=book)
+#         except BookBought.DoesNotExist:
+#             cm = ''
+#         context = {"book": book, "customer": cm}
+#         return render(request, 'library/mainBookDescription.html', context)
+#     try:
+#         customer = BookBought.objects.get(customer=request.user, book=book)
+#     except BookBought.DoesNotExist:
+#         customer = None
+#     context = {"book": book, "customer": customer}
+#     return render(request, 'library/buybook.html', context)
+#
+
 @csrf_exempt
 def buybook(request, pk):
     book = get_object_or_404(MainBooks, pk=pk)
 
+    context = {"book": book, "customer": None}
+
     if request.method == 'POST':
-        phone = request.POST['phone']
+        phone = request.POST.get('phone')
         amount = int(book.amount)
         access_token = MpesaAccessToken.validated_mpesa_access_token
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
@@ -235,57 +285,83 @@ def buybook(request, pk):
             "PartyA": 254757316903,
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
-            "CallBackURL": "https://a8f3-102-215-13-135.ngrok-free.app/mpesa-callback/",
+            "CallBackURL": "https://musing-fog-55251.pktriot.net/library/mpesa-callback/" + pk + "/" + str(
+                request.user.pk) + "/",
             "AccountReference": f"mesh library username: {request.user.username}: title {book.title}",
             "TransactionDesc": "Web Development Charges"
         }
-        requests.post(api_url, json=mpesa_request, headers=headers)
-        BookBought.objects.get_or_create(
-            book=book,
-            customer=request.user,
-            amount=amount
 
-        )
         try:
-            cm = BookBought.objects.get(customer=request.user, book=book)
-        except BookBought.DoesNotExist:
-            cm = ''
-        context = {"book": book, "customer": cm}
-        return render(request, 'library/mainBookDescription.html', context)
+            # Make the M-Pesa API request
+            response = requests.post(api_url, json=mpesa_request, headers=headers)
+
+            # Handle the API response
+            if response.status_code == 200:
+                # Payment initiation successful
+                # You can return a response or render a confirmation page if needed
+                return render(request, 'library/payment_initiated.html',{"pk":pk})
+            else:
+                # Handle API errors
+                return HttpResponse(f"Error initiating payment: {response.text}", status=response.status_code)
+
+        except Exception as e:
+            # Handle exceptions (e.g., network errors)
+            return HttpResponse(f"Exception: {str(e)}", status=500)
+
     try:
         customer = BookBought.objects.get(customer=request.user, book=book)
+        context["customer"] = customer
     except BookBought.DoesNotExist:
-        customer = None
-    context = {"book": book, "customer": customer}
+        pass
+
     return render(request, 'library/buybook.html', context)
 
 
-
-
 @csrf_exempt
-def mpesa_callback(request):
+def mpesa_callback(request, pk, upk):
     if request.method == 'POST':
-        # Parse the JSON data from the callback
-        callback_data = json.loads(request.body)
+        try:
+            callback_data = json.loads(request.body)
+            transaction_status = callback_data.get('Body', {}).get('stkCallback', {}).get('ResultCode')
+            print(int(transaction_status))
+            if int(transaction_status) == 0:
 
-        # Extract relevant information from the callback_data
-        transaction_status = callback_data.get('Body', {}).get('stkCallback', {}).get('ResultCode')
+                amount = \
+                    callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                        0].get(
+                        'Value', '')
+                receipt = \
+                    callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                        1].get(
+                        'Value', '')
+                date = callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                    3].get('Value', '')
+                number = \
+                    callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                        4].get(
+                        'Value', '')
 
-        # Check if the transaction was canceled (adjust the status code based on Safaricom's documentation)
-        if transaction_status == 'Cancelled':
-            return HttpResponse("cancelled")
-        # Update your application state to reflect the cancellation (mark the transaction as canceled in your database, for example)
+                book = MainBooks.objects.get(pk=pk)
+                request.user = User.objects.get(pk=upk)
+                BookBought.objects.get_or_create(
+                    book=book,
+                    customer=request.user,
+                    amount=amount,
+                    receipt=receipt,
+                    number=number
+                )
+                return HttpResponse(json.dumps({"ResultCode": "0", "ResultDesc": "Success"}),
+                                    content_type='application/json')
+            else:
+                return HttpResponse(json.dumps({"ResultCode": transaction_status, "ResultDesc": "Failed"}),
+                                    content_type='application/json')
 
-        # Notify the user about the cancellation (you might want to implement this based on your application's requirements)
+        except Exception as e:
+            # Print the exception for further investigation
+            print(f"Exception: {str(e)}")
+            return HttpResponse(f"Exception: {str(e)}", status=500)
 
-        # Perform any necessary cleanup steps
-
-        # Return a response to Safaricom
-        return HttpResponse(json.dumps({"ResultCode": "0", "ResultDesc": "Success"}), content_type='application/json')
-
-    # Handle other HTTP methods if needed
     return HttpResponse(status=405)
-
 
 def searchwithcategory(request, ctname):
     return searchhome(request, ctname)

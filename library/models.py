@@ -54,8 +54,19 @@ class MainBooks(models.Model):
 class BookBought(models.Model):
     book = models.ForeignKey(MainBooks, null=False, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now=True)
     amount = models.IntegerField(default=0)
+    receipt = models.CharField(max_length=30)
+    number = models.CharField(max_length=20)
 
     def __str__(self):
         return self.book.title
+
+
+class UsersPayment(models.Model):
+    userpk = models.IntegerField()
+    bookid = models.IntegerField()
+    amount = models.IntegerField(default=0)
+    receipt = models.CharField(max_length=30)
+    number = models.IntegerField()
+    date = models.DateTimeField(auto_now=True)

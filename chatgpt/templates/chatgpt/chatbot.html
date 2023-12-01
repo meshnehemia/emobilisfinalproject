@@ -82,8 +82,8 @@
         </div>
         <div style="margin-bottom: 5px">
             <div class="mobile-menuItems">
-                <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Individuals</a>
-                <a class="btn btn--main btn--pill" href="{% url 'activity' %}">Groups</a>
+                <a class="btn btn--main btn--pill" href="{% url 'mychats' 'individual' %}">Individuals</a>
+                <a class="btn btn--main btn--pill" href="{% url 'mychats' 'group' %}">Groups</a>
                 <a href="{% url 'chatbot' %}" class="btn btn--main btn--pill">chat with AI</a>
             </div>
         </div>
@@ -118,8 +118,8 @@
                         </div>
                         <div style="margin-bottom: 5px">
                             <div class="mobile-menuItems">
-                                <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Individuals</a>
-                                <a class="btn btn--main btn--pill" href="{% url 'activity' %}">Groups</a>
+                               <a class="btn btn--main btn--pill" href="{% url 'mychats' 'individual' %}">Individuals</a>
+                                <a class="btn btn--main btn--pill" href="{% url 'mychats' 'group' %}">Groups</a>
                                 <a href="{% url 'chatbot' %}" class="btn btn--main btn--pill">chat with AI</a>
                             </div>
                         </div>

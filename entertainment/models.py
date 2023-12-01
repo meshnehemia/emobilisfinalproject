@@ -32,6 +32,8 @@ class VideoSale(models.Model):
     video = models.ForeignKey(MyVideos, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     cost = models.DecimalField(default=0, decimal_places=2, max_digits=20)
+    number = models.CharField(max_length=30)
+    ref = models.CharField(max_length=30)
 
     def __str__(self):
         return f"Sale: {self.seller.username} to {self.buyer.username} for {self.video.video_title}"

@@ -13,4 +13,5 @@ urlpatterns = [
     path('video/<int:pk>', views.videodetails, name='videodetails'),
     path('watchvideo/<int:pk>', views.videowatch, name='watch'),
     path('deletevideo/<int:pk>', views.deletevideo, name='deletevideo'),
+    path('mpesa-callback/<int:pk>/<int:upk>/', views.mpesa_callback, name='mpesa_callback'),
 ]

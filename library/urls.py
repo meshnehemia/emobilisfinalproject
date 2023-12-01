@@ -15,5 +15,5 @@ urlpatterns = [
     path('buy/<str:pk>', views.buybook, name='buybook'),
     path('searchbyct/<str:ctname>/', views.searchwithcategory, name='searchbycategoty'),
     path('delete/<int:pk>', views.deletebook, name='deletebook'),
-    path('mpesa-callback/', views.mpesa_callback, name='mpesa_callback'),
+    path('mpesa-callback/<int:pk>/<int:upk>/', views.mpesa_callback, name='mpesa_callback'),
  ]

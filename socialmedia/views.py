@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from django.views.static import serve
 
 # from finalemobilisprojrct import settings
-from .models import Room, Topic, Message, User, PersonalChat, GroupMembers, GroupMessages, Groups
+from .models import Room, Topic, Message, User, PersonalChat, GroupMembers, GroupMessages, Groups,GroupAdmin
 from django.http import HttpResponse, JsonResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -546,12 +546,19 @@ def creategroup(request):
         if form.is_valid():
             group_instance = form.save(commit=False)
             group_instance.name = group_instance.name.lower()
+            if User.objects.filter(username=group_instance.name):
+                return render(request, 'socialmedia/nogroup.html', {'obj': "a person with that username exist"})
             group_instance.founder = request.user
             group_instance.save()
             verified, created = GroupMembers.objects.get_or_create(
                 group=group_instance,
                 member=request.user
             )
+            verified, created = GroupAdmin.objects.get_or_create(
+                group=group_instance,
+                admin=request.user
+            )
+
             pk = group_instance.groupcode
             return redirect('/groupchatscrean/' + str(pk) + '/')
         else:

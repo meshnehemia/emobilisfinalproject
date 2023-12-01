@@ -64,6 +64,8 @@
                                                 <th class="col">Title</th>
                                                 <th class="col">customer</th>
                                                 <th class="col">date</th>
+                                                <th class="col">customer number</th>
+                                                <th class="col">revelance number</th>
                                                 <th class="col">amount</th>
                                             </tr>
                                             </thead>
@@ -79,6 +81,8 @@
                                                         <a href="{% url 'customerpurchase' book.customer.username %}">{{ book.customer.username }}</a>
                                                     </td>
                                                     <td>{{ book.date }}</td>
+                                                    <td>{{ book.number }}</td>
+                                                    <td>{{ book.receipt }}</td>
                                                     <td>{{ book.amount }}</td>
                                                     <script>amount += {{ book.amount }};</script>
                                                 </tr>
@@ -87,6 +91,8 @@
                                             <tfoot>
                                             <tr class="sticky-row">
                                                 <td>total</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>

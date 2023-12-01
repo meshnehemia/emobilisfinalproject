@@ -1,7 +1,9 @@
+import json
+
 import requests
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from googleapiclient.discovery import build
@@ -9,6 +11,7 @@ from googleapiclient.discovery import build
 from entertainment.forms import VideoForm
 from entertainment.models import MyVideos, Views, VideoSale
 from library.credentials import MpesaAccessToken, LipanaMpesaPpassword
+from socialmedia.models import User
 
 # Create your views here.
 # API_KEY = 'AIzaSyCYi5viDwayCM4yCMuGSBQI2_W0HQlcU0U'
@@ -24,7 +27,7 @@ def home(request):
     if len(videos) > 0:
         for video in videos[:4]:
             priority.append({
-                "url": '/entertainment/video/' + str(video.id)+'/',
+                "url": '/entertainment/video/' + str(video.id) + '/',
                 "title": video.video_title,
                 "channel": str(video.video_owner),
                 "thumbnail": video.video_image.url,
@@ -257,17 +260,61 @@ def buyvideo(request, pk):
             "PartyA": 254757316903,
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
-            "CallBackURL": "https://a8f3-102-215-13-135.ngrok-free.app/mpesa-callback/",
+            "CallBackURL": "https://musing-fog-55251.pktriot.net/entertainment/mpesa-callback/" + str(pk) + "/" + str(
+                request.user.pk) + "/",
             "AccountReference": f"mesh Entertinment: username: {request.user.username}: title {video.video_title}",
             "TransactionDesc": "Web Development Charges"
         }
         requests.post(api_url, json=mpesa_request, headers=headers)
-        VideoSale.objects.get_or_create(
-            buyer=request.user,
-            seller=video.video_owner,
-            video=video,
-            cost=amount
-        )
-        return render(request, 'entertainment/videodetails.html', context)
+        return render(request, 'entertainment/payment_initiated.html', {'pk': pk})
 
     return render(request, 'entertainment/buyvideo.html', context)
+
+
+@csrf_exempt
+def mpesa_callback(request, pk, upk):
+    if request.method == 'POST':
+        try:
+            callback_data = json.loads(request.body)
+            transaction_status = callback_data.get('Body', {}).get('stkCallback', {}).get('ResultCode')
+            print(int(transaction_status))
+            if int(transaction_status) == 0:
+
+                amount = \
+                    callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                        0].get(
+                        'Value', '')
+                receipt = \
+                    callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                        1].get(
+                        'Value', '')
+                date = callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                    3].get('Value', '')
+                number = \
+                    callback_data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+                        4].get(
+                        'Value', '')
+
+                request.user = User.objects.get(pk=upk)
+                video = get_object_or_404(MyVideos, pk=pk)
+                VideoSale.objects.get_or_create(
+                    buyer=request.user,
+                    seller=video.video_owner,
+                    video=video,
+                    number=number,
+                    ref=receipt,
+                    cost=amount
+                )
+
+                return HttpResponse(json.dumps({"ResultCode": "0", "ResultDesc": "Success"}),
+                                    content_type='application/json')
+            else:
+                return HttpResponse(json.dumps({"ResultCode": transaction_status, "ResultDesc": "Failed"}),
+                                    content_type='application/json')
+
+        except Exception as e:
+            # Print the exception for further investigation
+            print(f"Exception: {str(e)}")
+            return HttpResponse(f"Exception: {str(e)}", status=500)
+
+    return HttpResponse(status=405)

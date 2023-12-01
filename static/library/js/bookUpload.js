@@ -16,10 +16,14 @@ function handleFiles(files, type) {
         } else {
             // Check if the selected file is a PDF
             let bookFile = files[0];
-            if (bookFile.type !== 'application/pdf') {
-                alert('Please upload a PDF file for the book.');
+            if (!['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'].includes(bookFile.type)) {
+                alert('Please upload a PDF, DOCX, or TXT file for the book.');
                 return;
             }
+            // if (bookFile.type !== 'application/pdf') {
+            //     alert('Please upload a PDF file for the book.');
+            //     return;
+            // }
 
             bookInput.files = files;
             if (imageInput.files && imageInput.files.length > 0) {
