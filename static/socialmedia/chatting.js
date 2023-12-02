@@ -24,6 +24,9 @@ setInterval(() => {
                                         <div class="roomListRoom__content">
                                             <a href="/chatscreem/${chat.senderid}/">${chat.sendername}</a>
                                         </div>
+                                        <div class="roomListRoom__actions">
+                                                <span>${chat.message}</span>
+                                        </div>
                                     </div>`;
                         } else if (chat.user !== chat.receiver) {
                             return `
@@ -35,10 +38,17 @@ setInterval(() => {
                                                 </div>
                                                 <span>@${chat.receiver}</span>
                                             </a>
+                                            <div class="roomListRoom__actions">
+                                                <span>${chat.time} ago</span>
+                                            </div>
                                         </div>
                                         <div class="roomListRoom__content">
                                             <a href="/chatscreem/${chat.receiverid}/">${chat.receiver}</a>
                                         </div>
+                                        <div class="roomListRoom__actions">
+                                                <span>${chat.message}</span>
+                                         </div>
+                                        
                                     </div>`;
                         }
                     }).join();

@@ -262,7 +262,7 @@ def buyvideo(request, pk):
             "PhoneNumber": phone,
             "CallBackURL": "https://musing-fog-55251.pktriot.net/entertainment/mpesa-callback/" + str(pk) + "/" + str(
                 request.user.pk) + "/",
-            "AccountReference": f"mesh Entertinment: username: {request.user.username}: title {video.video_title}",
+            "AccountReference": f"mesh Entertinment: username: {request.user.username}: video title {video.video_title}",
             "TransactionDesc": "Web Development Charges"
         }
         requests.post(api_url, json=mpesa_request, headers=headers)

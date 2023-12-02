@@ -382,9 +382,8 @@ def loadpersonalchats(request, pk):
 def getchats(request, type):
     try:
         if type == 'individual':
-            mychats = PersonalChat.objects.filter(
-                Q(sender=request.user) | Q(receiver=request.user)).distinct().order_by(
-                '-time')
+            mychats = PersonalChat.objects.filter(Q(sender=request.user) | Q(receiver=request.user)).distinct().order_by('-time')
+
             mychat = [
                 {
                     'user': request.user.username,

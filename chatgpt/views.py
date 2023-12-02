@@ -7,7 +7,7 @@ from openai import AsyncOpenAI
 from socialmedia import views
 from socialmedia.models import Message, Topic, Room
 
-openai_api_key = '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'
+openai_api_key = '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'
 
 
 @login_required(login_url='login')

@@ -41,7 +41,7 @@
 {% endblock %}
 {% block content %}
     <div class="container mt-3">
-        <h2 class="btn-primary text-center" style="font-size: 20px">ADD NEW VIDEO</h2>
+        <h2 class="btn-primary text-center" style="font-size: 20px">Update VIDEO</h2>
         <div class="d-flex flex-column justify-content-start mt-5">
             <form method="post" enctype="multipart/form-data" id="videoUploadForm" data-video-id="{{ video_instance.id }}">
                 {% csrf_token %}

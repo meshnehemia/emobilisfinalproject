@@ -34,6 +34,40 @@
             max-width: 100%;
             max-height: 200px; /* Adjust the height as needed */
         }
+        form div{
+            display: flex;
+            position: relative;
+        }
+        form div label {
+            width: 200px;
+        }
+        form div input{
+            width: 200px;
+        }
+        textarea{
+            max-height: 60px;
+            width: 100%;
+            border-radius: 5px;
+        }
+        select{
+            width: 50%;
+            height: 40px;
+            position: absolute;
+            left: 167px;
+            border-radius: 3px;
+        }
+        #id_cost{
+            width: 50%;
+            height: 40px;
+            position: absolute;
+            left: 167px;
+            border-radius: 3px;
+        }
+        .drop-area{
+            height: 200px;
+            width:400px;
+        }
+
     </style>
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -46,21 +80,31 @@
             <form method="post" enctype="multipart/form-data" id="videoUploadForm" onsubmit="uploadVideo(event)">
                 {% csrf_token %}
                 <div class="d-flex justify-content-start mt-3 flex-column w-75">
-
+                    <div>
                     <label for="{{ form.video_title.id_for_label }}" class="form-label">Video Title:</label>
                     <p class="form-control">{{ form.video_title }}</p>
+                    </div>
 
-                    <label for="{{ form.video_description.id_for_label }}">Video Description:</label>
-                    {{ form.video_description }}
 
+                    <div>
+                        <label for="{{ form.video_description.id_for_label }}">Video Description:</label>
+                        {{ form.video_description }}
+                    </div>
+                    <br>
+
+                <div>
                     <label for="{{ form.type.id_for_label }}">Video type:</label>
                     {{ form.type }}
-
+                </div>
+                    <br>
+                <div>
                     <label for="{{ form.cost.id_for_label }}">Suggest cost:</label>
                     {{ form.cost }}
-
+                    </div>
                     <!-- Image Drop Area -->
                     <br><br>
+                <div>
+                <label>upload image</label>
                     <div class="drop-area" id="imageDropArea" ondragenter="handleDragEnter(event)"
                          ondragover="handleDragOver(event)" ondrop="handleImageDrop(event)"
                          onclick="handleClickImageArea()">
@@ -71,8 +115,11 @@
                              src="{% if form.video_image.value %}{{ form.video_image.url }}{% endif %}"
                              alt="Image Cover">
                     </div>
+                </div>
                     <br><br>
+                <div>
                     <!-- Video Drop Area -->
+                <label>upload video</label>
                     <div class="drop-area" id="videoDropArea" ondragenter="handleDragEnter(event)"
                          ondragover="handleDragOver(event)" ondrop="handleVideoDrop(event)"
                          onclick="handleClickVideoArea()">
@@ -82,7 +129,7 @@
                         <p id="videoName" class="mt-2">
                             {% if form.video.value %}{{ form.video.value.name }}{% endif %}</p>
                     </div>
-
+                </div>
                     <button type="submit" class="w-50 text-center mx-auto mt-3 bg-success">Submit</button>
                 </div>
             </form>

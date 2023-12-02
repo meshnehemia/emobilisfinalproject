@@ -287,7 +287,7 @@ def buybook(request, pk):
             "PhoneNumber": phone,
             "CallBackURL": "https://musing-fog-55251.pktriot.net/library/mpesa-callback/" + pk + "/" + str(
                 request.user.pk) + "/",
-            "AccountReference": f"mesh library username: {request.user.username}: title {book.title}",
+            "AccountReference": f"mesh library username: {request.user.username}: book title {book.title}",
             "TransactionDesc": "Web Development Charges"
         }
 
@@ -299,7 +299,7 @@ def buybook(request, pk):
             if response.status_code == 200:
                 # Payment initiation successful
                 # You can return a response or render a confirmation page if needed
-                return render(request, 'library/payment_initiated.html',{"pk":pk})
+                return render(request, 'library/payment_initiated.html', {"pk": pk})
             else:
                 # Handle API errors
                 return HttpResponse(f"Error initiating payment: {response.text}", status=response.status_code)
@@ -362,6 +362,7 @@ def mpesa_callback(request, pk, upk):
             return HttpResponse(f"Exception: {str(e)}", status=500)
 
     return HttpResponse(status=405)
+
 
 def searchwithcategory(request, ctname):
     return searchhome(request, ctname)
