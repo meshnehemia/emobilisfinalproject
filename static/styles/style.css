@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 :root {
-  --color-main: #71c6dd;
+  --color-main: #7777b3;
   --color-main-light: #e1f6fb;
   --color-dark: #1f2bb8;
   --color-dark-medium: #5449ee;
@@ -9,8 +9,8 @@
   --color-light: #e5e5e5;
   --color-gray: #ffffff;
   --color-light-gray: #feffff;
-  --color-bg: #3caf38;
-  --color-success: #5dd693;
+  --color-bg: #3240dd;
+  --color-success: #3240dd;
   --color-error: #fc4b0b;
 }
 
