@@ -14,8 +14,8 @@
 {% block content %}
     <div style="position:fixed; top:70px; overflow-y: scroll; height: 650px;width: 100%">
         <div style="background-image: linear-gradient(rgba(126,120,120,0.5),rgba(2,84,2,0.5),rgba(59,15,82,0.5)),url('{% static "images/img_1.png" %}');background-repeat: no-repeat;background-size: cover;background-position: center;height: 100%; width: 100%">
-            <div class="d-flex justify-content-end " style="background-color: #0f5132">
-                <a href="{% url 'mybook' %}" class="btn btn-secondary"><h2 class="section-title" style="color: white;">MY Library</h2></a>
+            <div class="d-flex justify-content-end " style="background-color: #111974">
+                <a href="{% url 'mybook' %}" class="btn btn-success"><h2 class="section-title" style="color: white;">MY Library</h2></a>
             </div>
             <div class="swiper main-swiper w-100 h-75 d-flex justify-content-center align-bottom align-items-baseline">
                 <div class="swiper-wrapper">
@@ -248,7 +248,7 @@
                                             {#                                        {% endif %}#}
                                             {#                                        <span class="price btn btn-success"> read</span>#}
                                             <a href="{% url 'MainbookDescription' book.id %}"
-                                               style="width: 100%; background-color: #0f5132; display: flex; justify-content: center; padding: 10px 0; border-radius: 20px">view
+                                               style="width: 100%; background-color: blue; display: flex; justify-content: center; padding: 10px 0; border-radius: 20px">view
                                                 book</a>
                                         </div>
                                     </div>
@@ -284,7 +284,7 @@
                                                     <h3>{{ book.title|truncatechars:20 }}</h3>
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <a href="{% url 'describebook' description=book.bookinfo %}"
-                                                           class="price btn btn-success container text-center">view
+                                                           class="price btn btn-success container text-center" style="color:white;">view
                                                             book</a>
                                                     </div>
                                                 </div>

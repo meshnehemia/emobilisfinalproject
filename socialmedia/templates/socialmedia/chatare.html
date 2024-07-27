@@ -62,15 +62,15 @@
     <div class="lap">
         <div class="roomList__header">
             <a href="{% url 'home' %}"
-               style="background-color: #08c6e0; border-radius: 5px; margin: 1px; text-align: center">
+               style="background-color: #0719e4; border-radius: 5px; margin: 1px; text-align: center">
                 <h2>Study Room</h2>
                 <p>{{ room_count }} Rooms available</p>
             </a>
-            <div>
+            <div style="background-color:#0719e4;">
                 <h2>My Chats</h2>
-                <p>UNDER DEVELOPMENT</p>
+                {% comment %} <p>UNDER DEVELOPMENT</p> {% endcomment %}
             </div>
-            <a class="btn btn--main" href="{% url 'create-room' %}">
+            <a class="btn btn--main" href="{% url 'create-room' %}" style="background-color:#0719e4;">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                      viewBox="0 0 32 32">
                     <title>add</title>
@@ -92,21 +92,21 @@
     <main class="layout layout--3">
         <div class="container bd1">
             <div class="b3"> {% include 'socialmedia/topics_component.html' %}</div>
-            <section style="max-width:50%; min-width: 50%;" class="bg-warning d-flex justify-content-center phone">
+            <section style="max-width:50%; min-width: 50%; background:#0719e4;" class="bg-warning d-flex justify-content-center phone">
 
-                <div class="w-100" style="background-color: #383737">
+                <div class="w-100" style="background-color:#1f2bb8;">
                     <div class="laps">
                         <div class="roomList__header">
                             <a href="{% url 'home' %}"
-                               style="background-color: #08c6e0; border-radius: 5px; margin: 1px; text-align: center">
+                               style="background-color: #0719e4; border-radius: 5px; margin: 1px; text-align: center">
                                 <h2>Study Room</h2>
                                 <p>{{ room_count }} Rooms available</p>
                             </a>
                             <div>
                                 <h2>My Chats</h2>
-                                <p>UNDER DEVELOPMENT</p>
+                                {% comment %} <p>UNDER DEVELOPMENT</p> {% endcomment %}
                             </div>
-                            <a class="btn btn--main" href="{% url 'create-room' %}">
+                            <a class="btn btn--main" href="{% url 'create-room' %}" style="background-color:#0719e4;">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                      viewBox="0 0 32 32">
                                     <title>add</title>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                     <div class="w-100">
-                        <div class="card" style="background-color: #3f4156;height: 600px">
+                        <div class="card" style="background-color: #3f4156;height: 400px">
 
                             <div class="card-header d-flex justify-content-between align-items-center p-3 "
                                  style="border-top: 4px solid #696d97;">
